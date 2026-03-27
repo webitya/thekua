@@ -1,0 +1,170 @@
+@import "tailwindcss";
+
+:root {
+  --foreground-rgb: 30, 20, 10;
+  --background-start-rgb: 255, 251, 242;
+  --background-end-rgb: 255, 248, 235;
+
+  /* THEKUA Brand Colors */
+  --brand-saffron: #E8730A;
+  --brand-turmeric: #F2A52B;
+  --brand-jaggery: #8B4513;
+  --brand-cream: #FFF8E7;
+  --brand-dark: #1A0E05;
+  --brand-marigold: #FF8C00;
+  --brand-cardamom: #6B4C2A;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 255, 248, 235;
+    --background-start-rgb: 20, 10, 3;
+    --background-end-rgb: 26, 14, 5;
+  }
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: rgb(var(--background-start-rgb));
+  font-family: var(--font-poppins), 'Poppins', sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .font-display {
+    font-family: var(--font-playfair), 'Playfair Display', serif;
+  }
+
+  .glass {
+    background: rgba(255, 248, 235, 0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(232, 115, 10, 0.15);
+  }
+
+  .dark .glass {
+    background: rgba(26, 14, 5, 0.85);
+    border-bottom: 1px solid rgba(232, 115, 10, 0.2);
+  }
+
+  .brand-gradient {
+    background: linear-gradient(135deg, var(--brand-saffron) 0%, var(--brand-turmeric) 50%, var(--brand-marigold) 100%);
+  }
+
+  .brand-text-gradient {
+    background: linear-gradient(135deg, var(--brand-saffron), var(--brand-turmeric));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .thekua-card {
+    background: rgba(255, 248, 235, 0.8);
+    border: 1px solid rgba(232, 115, 10, 0.15);
+    border-radius: 1.5rem;
+    transition: all 0.4s ease;
+  }
+
+  .dark .thekua-card {
+    background: rgba(30, 15, 5, 0.8);
+    border: 1px solid rgba(232, 115, 10, 0.2);
+  }
+
+  .thekua-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 60px rgba(232, 115, 10, 0.15);
+    border-color: rgba(232, 115, 10, 0.4);
+  }
+
+  .luxury-text {
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    font-weight: 300;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-8px); }
+  }
+
+  @keyframes tracking-pulse {
+    0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(232, 115, 10, 0.3); }
+    70% { transform: scale(1.05); box-shadow: 0 0 0 12px rgba(232, 115, 10, 0); }
+    100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(232, 115, 10, 0); }
+  }
+
+  @keyframes line-flow {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+  }
+
+  @keyframes warm-glow {
+    0%, 100% { opacity: 0.4; }
+    50% { opacity: 0.8; }
+  }
+
+  .animate-tracking-pulse {
+    animation: tracking-pulse 2s infinite;
+  }
+
+  .animate-line-flow {
+    background: linear-gradient(90deg, #f5e6c8 0%, #E8730A 50%, #f5e6c8 100%);
+    background-size: 200% 100%;
+    animation: line-flow 2s linear infinite;
+  }
+
+  .dark .animate-line-flow {
+    background: linear-gradient(90deg, #3d2510 0%, #F2A52B 50%, #3d2510 100%);
+    background-size: 200% 100%;
+  }
+
+  .animate-fade-in {
+    animation: fadeIn 0.6s ease-out forwards;
+  }
+
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+
+  .animate-warm-glow {
+    animation: warm-glow 3s ease-in-out infinite;
+  }
+
+  /* Scrollbar Styling */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: rgb(var(--background-start-rgb));
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--brand-saffron);
+    border-radius: 3px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--brand-jaggery);
+  }
+}
