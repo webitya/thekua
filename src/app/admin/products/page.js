@@ -62,17 +62,18 @@ export default function AdminProducts() {
                 formData.append('file', file);
                 const res = await fetch('/api/upload', { method: 'POST', body: formData });
                 const data = await res.json();
-                if (!data.success) throw new Error(data.error || data.message || 'Gallery upload failed');
+                if (!data.success) throw new Error(data.error || 'Server error');
                 return data.url;
             });
 
             const urls = await Promise.all(uploadPromises);
             setNewProduct(prev => ({ 
                 ...prev, 
-                images: [...prev.images, ...urls] 
+                images: [...(prev.images || []), ...urls] 
             }));
+            alert(`Gallery updated: ${urls.length} images synchronized.`);
         } catch (error) {
-            alert('Gallery Error: ' + error.message);
+            alert('Gallery Sync Failure: ' + error.message);
         } finally {
             setUploading(null);
         }
@@ -111,16 +112,24 @@ export default function AdminProducts() {
                 formData.append('file', file);
                 const res = await fetch('/api/upload', { method: 'POST', body: formData });
                 const data = await res.json();
-                if (!data.success) throw new Error(data.error || data.message || 'Variant upload failed');
+                if (!data.success) throw new Error(data.error || 'Server error');
                 return data.url;
             });
 
             const urls = await Promise.all(uploadPromises);
-            const updatedVariants = [...newProduct.variants];
-            updatedVariants[index].images = [...updatedVariants[index].images, ...urls];
-            setNewProduct({ ...newProduct, variants: updatedVariants });
+            
+            setNewProduct(prev => {
+                const updatedVariants = [...prev.variants];
+                updatedVariants[index] = {
+                    ...updatedVariants[index],
+                    images: [...(updatedVariants[index].images || []), ...urls]
+                };
+                return { ...prev, variants: updatedVariants };
+            });
+            
+            alert(`Variant Assets Attached: ${urls.length} images connected.`);
         } catch (error) {
-            alert('Upload Error: ' + error.message);
+            alert('Variant Asset Crash: ' + error.message);
         } finally {
             setUploading(null);
         }
@@ -146,7 +155,17 @@ export default function AdminProducts() {
 
     const handleEdit = (product) => {
         setEditingId(product._id);
-        setNewProduct({ ...product });
+        
+        // Ensure all variants have an images array (Safe Hydration)
+        const sanitizedProduct = {
+            ...product,
+            variants: product.variants.map(v => ({
+                ...v,
+                images: v.images || []
+            }))
+        };
+        
+        setNewProduct(sanitizedProduct);
         setIsFormOpen(true);
     };
 
@@ -167,12 +186,22 @@ export default function AdminProducts() {
             const url = editingId ? `/api/products/${editingId}` : '/api/products';
             const method = editingId ? 'PUT' : 'POST';
 
+            // DEEP PERSISTENCE: Ensure every field is strictly serialized
             const payload = {
-                ...newProduct,
+                name: newProduct.name,
+                type: newProduct.type,
+                description: newProduct.description,
+                shelfLife: newProduct.shelfLife,
+                isVeg: newProduct.isVeg,
+                allergenInfo: newProduct.allergenInfo,
+                ingredients: newProduct.ingredients,
+                images: newProduct.images, // Main Gallery Sync
                 variants: newProduct.variants.map(v => ({ 
-                    ...v, 
+                    name: v.name,
+                    weight: v.weight,
                     price: Number(v.price),
-                    discountPrice: v.discountPrice ? Number(v.discountPrice) : undefined
+                    discountPrice: v.discountPrice ? Number(v.discountPrice) : undefined,
+                    images: v.images || [] // Variant Gallery Sync
                 }))
             };
 
@@ -185,16 +214,16 @@ export default function AdminProducts() {
             const result = await res.json();
 
             if (res.ok) {
+                alert('REGISTRY UPDATED: Successfully committed to MongoDB.');
                 setNewProduct(initialProductState);
                 setIsFormOpen(false);
                 setEditingId(null);
                 fetchProducts();
             } else {
-                alert('Server Error: ' + (result.error || result.message || 'Failed to save snack'));
+                alert('Persistence Failure: ' + (result.error || result.message || 'Check Server Logs'));
             }
         } catch (error) {
-            console.error('Save error:', error);
-            alert('Network Error: Could not connect to server');
+            alert('Network Blockage: Could not reach the Registry API');
         } finally {
             setSaving(false);
         }
@@ -255,7 +284,7 @@ export default function AdminProducts() {
 
             {isFormOpen ? (
                 /* Snack Creation/Edit Form */
-                <div className="bg-white border border-black p-8 animate-in fade-in slide-in-from-bottom-2 duration-300">
+                <div className="bg-white border border-black p-4 md:p-8 animate-in fade-in slide-in-from-bottom-2 duration-300">
                     <form onSubmit={handleSubmit} className="max-w-7xl mx-auto space-y-12">
                         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
                             
@@ -264,20 +293,20 @@ export default function AdminProducts() {
                                 <div className="space-y-6">
                                     <div className="flex items-center gap-2 text-black/40">
                                         <Type size={14} />
-                                        <h3 className="text-[10px] font-black uppercase tracking-widest">Base Identity</h3>
+                                        <h3 className="text-[10px] font-bold uppercase tracking-widest">Base Identity</h3>
                                     </div>
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                         <div className="space-y-1">
-                                            <label className="text-[9px] font-black text-gray-400 uppercase tracking-widest">Snack Name</label>
+                                            <label className="text-[9px] font-bold text-gray-400 uppercase tracking-widest">Snack Name</label>
                                             <input required type="text" placeholder="e.g. PREMIUM DRY FRUIT THEKUA" className="w-full px-4 py-3 bg-white border border-black text-xs font-bold uppercase tracking-wide focus:bg-gray-50 outline-none" value={newProduct.name} onChange={e => setNewProduct({...newProduct, name: e.target.value})} />
                                         </div>
                                         <div className="space-y-1">
-                                            <label className="text-[9px] font-black text-gray-400 uppercase tracking-widest">Category / Tag</label>
+                                            <label className="text-[9px] font-bold text-gray-400 uppercase tracking-widest">Category / Tag</label>
                                             <input required type="text" placeholder="e.g. FESTIVE COLLECTION" className="w-full px-4 py-3 bg-white border border-black text-xs font-bold uppercase tracking-wide focus:bg-gray-50 outline-none" value={newProduct.type} onChange={e => setNewProduct({...newProduct, type: e.target.value})} />
                                         </div>
                                     </div>
                                     <div className="space-y-1">
-                                        <label className="text-[9px] font-black text-gray-400 uppercase tracking-widest">Product Story (Description)</label>
+                                        <label className="text-[9px] font-bold text-gray-400 uppercase tracking-widest">Product Story (Description)</label>
                                         <textarea required rows={4} placeholder="Tell the tradition of this snack..." className="w-full px-4 py-3 bg-white border border-black text-xs font-medium leading-relaxed focus:bg-gray-50 outline-none resize-none" value={newProduct.description} onChange={e => setNewProduct({...newProduct, description: e.target.value})} />
                                     </div>
                                 </div>
@@ -286,25 +315,25 @@ export default function AdminProducts() {
                                 <div className="space-y-6 pt-6 border-t border-gray-100">
                                     <div className="flex items-center gap-2 text-black/40">
                                         <ShieldCheck size={14} />
-                                        <h3 className="text-[10px] font-black uppercase tracking-widest">Kitchen Specifications</h3>
+                                        <h3 className="text-[10px] font-bold uppercase tracking-widest">Kitchen Specifications</h3>
                                     </div>
                                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                                         <div className="space-y-1">
-                                            <label className="text-[9px] font-black text-gray-400 uppercase tracking-widest">Shelf Life</label>
+                                            <label className="text-[9px] font-bold text-gray-400 uppercase tracking-widest">Shelf Life</label>
                                             <div className="relative">
                                                 <input type="text" className="w-full px-4 py-3 bg-white border border-black text-xs font-bold uppercase focus:bg-gray-50 outline-none" value={newProduct.shelfLife} onChange={e => handleFieldChange('shelfLife', e.target.value)} />
                                                 <Clock className="absolute right-3 top-3 text-gray-300" size={14} />
                                             </div>
                                         </div>
                                         <div className="space-y-1">
-                                            <label className="text-[9px] font-black text-gray-400 uppercase tracking-widest">Dietary Preference</label>
+                                            <label className="text-[9px] font-bold text-gray-400 uppercase tracking-widest">Dietary Preference</label>
                                             <select className="w-full px-4 py-3 bg-white border border-black text-xs font-bold uppercase focus:bg-gray-50 outline-none appearance-none" value={newProduct.isVeg.toString()} onChange={e => handleFieldChange('isVeg', e.target.value === 'true')}>
                                                 <option value="true">100% PUREVEG (VEGETARIAN)</option>
                                                 <option value="false">NON-VEGETARIAN / EGGS</option>
                                             </select>
                                         </div>
                                         <div className="space-y-1">
-                                            <label className="text-[9px] font-black text-gray-400 uppercase tracking-widest">Allergen Disclaimer</label>
+                                            <label className="text-[9px] font-bold text-gray-400 uppercase tracking-widest">Allergen Disclaimer</label>
                                             <input type="text" className="w-full px-4 py-3 bg-white border border-black text-xs font-bold uppercase focus:bg-gray-50 outline-none" value={newProduct.allergenInfo} onChange={e => handleFieldChange('allergenInfo', e.target.value)} />
                                         </div>
                                     </div>
@@ -315,9 +344,9 @@ export default function AdminProducts() {
                                     <div className="flex justify-between items-center text-black">
                                         <div className="flex items-center gap-2 text-black/40">
                                             <Layers size={14} />
-                                            <h3 className="text-[10px] font-black uppercase tracking-widest">Packaging Options</h3>
+                                            <h3 className="text-[10px] font-bold uppercase tracking-widest">Packaging Options</h3>
                                         </div>
-                                        <button type="button" onClick={handleAddVariant} className="text-[9px] font-black uppercase bg-black text-white px-3 py-1.5 cursor-pointer hover:bg-gray-800 transition-all">Add Pack Size +</button>
+                                        <button type="button" onClick={handleAddVariant} className="text-[9px] font-bold uppercase bg-black text-white px-3 py-1.5 cursor-pointer hover:bg-gray-800 transition-all">Add Pack Size +</button>
                                     </div>
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                         {newProduct.variants.map((v, idx) => (
@@ -327,27 +356,27 @@ export default function AdminProducts() {
                                                 )}
                                                 <div className="grid grid-cols-2 gap-3">
                                                     <div className="space-y-1">
-                                                        <label className="text-[8px] font-black text-gray-400 uppercase tracking-widest">Label</label>
-                                                        <input required type="text" placeholder="Standard Pack" className="w-full px-2 py-2 bg-transparent border-b border-black text-[10px] font-black uppercase outline-none" value={v.name} onChange={e => handleVariantChange(idx, 'name', e.target.value)} />
+                                                        <label className="text-[8px] font-bold text-gray-400 uppercase tracking-widest">Label</label>
+                                                        <input required type="text" placeholder="Standard Pack" className="w-full px-2 py-2 bg-transparent border-b border-black text-[10px] font-bold uppercase outline-none" value={v.name} onChange={e => handleVariantChange(idx, 'name', e.target.value)} />
                                                     </div>
                                                     <div className="space-y-1">
-                                                        <label className="text-[8px] font-black text-gray-400 uppercase tracking-widest">Weight (Net)</label>
-                                                        <input required type="text" placeholder="500g" className="w-full px-2 py-2 bg-transparent border-b border-black text-[10px] font-black uppercase outline-none" value={v.weight} onChange={e => handleVariantChange(idx, 'weight', e.target.value)} />
+                                                        <label className="text-[8px] font-bold text-gray-400 uppercase tracking-widest">Weight (Net)</label>
+                                                        <input required type="text" placeholder="500g" className="w-full px-2 py-2 bg-transparent border-b border-black text-[10px] font-bold uppercase outline-none" value={v.weight} onChange={e => handleVariantChange(idx, 'weight', e.target.value)} />
                                                     </div>
                                                 </div>
                                                 <div className="grid grid-cols-2 gap-3 items-end">
                                                     <div className="space-y-1">
-                                                        <label className="text-[8px] font-black text-gray-400 uppercase tracking-widest">Base Price (₹)</label>
-                                                        <input required type="number" className="w-full px-2 py-2 bg-transparent border-b border-black text-[10px] font-black outline-none" value={v.price} onChange={e => handleVariantChange(idx, 'price', e.target.value)} />
+                                                        <label className="text-[8px] font-bold text-gray-400 uppercase tracking-widest">Base Price (₹)</label>
+                                                        <input required type="number" className="w-full px-2 py-2 bg-transparent border-b border-black text-[10px] font-bold outline-none" value={v.price} onChange={e => handleVariantChange(idx, 'price', e.target.value)} />
                                                     </div>
                                                     <div className="space-y-1">
-                                                        <label className="text-[8px] font-black text-orange-400 uppercase tracking-widest text-right block">Offer Price (₹)</label>
-                                                        <input type="number" placeholder="Optional" className="w-full px-2 py-2 bg-transparent border-b border-orange-200 text-[10px] font-black outline-none text-orange-600 placeholder:text-orange-200" value={v.discountPrice} onChange={e => handleVariantChange(idx, 'discountPrice', e.target.value)} />
+                                                        <label className="text-[8px] font-bold text-orange-400 uppercase tracking-widest text-right block">Offer Price (₹)</label>
+                                                        <input type="number" placeholder="Optional" className="w-full px-2 py-2 bg-transparent border-b border-orange-200 text-[10px] font-bold outline-none text-orange-600 placeholder:text-orange-200" value={v.discountPrice} onChange={e => handleVariantChange(idx, 'discountPrice', e.target.value)} />
                                                     </div>
                                                 </div>
                                                 <div className="flex gap-2">
                                                     <input type="file" multiple className="hidden" id={`v-img-${idx}`} onChange={(e) => handleVariantImageUpload(idx, e)} />
-                                                    <label htmlFor={`v-img-${idx}`} className="flex-1 text-center border border-black/10 bg-white text-[8px] font-black uppercase py-2 cursor-pointer hover:bg-black hover:text-white transition-all">
+                                                    <label htmlFor={`v-img-${idx}`} className="flex-1 text-center border border-black/10 bg-white text-[8px] font-bold uppercase py-2 cursor-pointer hover:bg-black hover:text-white transition-all">
                                                         {uploading === idx ? '...' : (v.images?.length > 0 ? 'MEDIA REGISTRY' : 'ATTACH PRODUCT ASSETS')}
                                                     </label>
                                                 </div>
@@ -374,11 +403,11 @@ export default function AdminProducts() {
                                     <div className="flex items-center justify-between">
                                         <div className="flex items-center gap-2 text-black/40">
                                             <ImageIcon size={14} />
-                                            <h3 className="text-[10px] font-black uppercase tracking-widest">Lifestyle Gallery</h3>
+                                            <h3 className="text-[10px] font-bold uppercase tracking-widest">Lifestyle Gallery</h3>
                                         </div>
                                         <div className="relative">
                                             <input type="file" multiple className="absolute inset-0 opacity-0 cursor-pointer" onChange={handleGalleryUpload} />
-                                            <button type="button" className="text-[9px] font-black uppercase bg-black text-white px-2 py-1 flex items-center gap-1">Add Assets +</button>
+                                            <button type="button" className="text-[9px] font-bold uppercase bg-black text-white px-2 py-1 flex items-center gap-1">Add Assets +</button>
                                         </div>
                                     </div>
                                     <div className="grid grid-cols-2 gap-2">
@@ -400,7 +429,7 @@ export default function AdminProducts() {
                                         <div className="flex items-center justify-between text-black/40">
                                             <div className="flex items-center gap-2">
                                                 <ListChecks size={14} />
-                                                <h3 className="text-[10px] font-black uppercase tracking-widest">Base Ingredients</h3>
+                                                <h3 className="text-[10px] font-bold uppercase tracking-widest">Base Ingredients</h3>
                                             </div>
                                             <button type="button" onClick={() => handleAddListItem('ingredients')} className="hover:text-black transition-colors"><Plus size={14} /></button>
                                         </div>
@@ -422,7 +451,7 @@ export default function AdminProducts() {
                             <button
                                 type="submit"
                                 disabled={saving}
-                                className="w-full md:w-80 bg-black text-white py-5 font-black uppercase tracking-[0.4em] text-[12px] hover:bg-orange-600 disabled:bg-gray-400 transition-all border border-black flex items-center justify-center shadow-xl"
+                                className="w-full md:w-80 bg-black text-white py-5 font-bold uppercase tracking-[0.4em] text-[12px] hover:bg-orange-600 disabled:bg-gray-400 transition-all border border-black flex items-center justify-center shadow-xl"
                             >
                                 {saving ? <Loader2 className="animate-spin" size={20} /> : (editingId ? 'CONFIRM CHANGES' : 'PUBLISH COLLECTION')}
                             </button>
@@ -432,89 +461,91 @@ export default function AdminProducts() {
             ) : (
                 /* Registry / List View */
                 <div className="space-y-6 animate-in fade-in slide-in-from-top-2 duration-300">
-                    <div className="flex flex-col md:flex-row gap-4 items-center">
-                        <div className="relative flex-1 w-full group">
-                            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-300 group-focus-within:text-black transition-colors" size={16} />
-                            <input type="text" placeholder="QUERY REGISTRY (NAME, TYPE, WEIGHT)..." className="w-full pl-12 pr-6 py-4 bg-white border border-black font-black text-[11px] uppercase tracking-wider outline-none focus:bg-gray-50 transition-all" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
-                        </div>
-                        <button onClick={() => { setIsFormOpen(true); setEditingId(null); setNewProduct(initialProductState); }} className="bg-black text-white px-10 py-4 font-black uppercase tracking-[0.2em] text-[11px] hover:bg-orange-600 transition-all border border-black w-full md:w-auto cursor-pointer">ADD NEW SNACK +</button>
+                    {/* Mobile Card View */}
+                    <div className="md:hidden space-y-4">
+                        {filteredProducts.map((product) => (
+                            <div key={product._id} className="bg-white border border-black p-4 space-y-4">
+                                <div className="flex items-center space-x-3">
+                                    <div className="h-16 w-14 shrink-0 bg-white relative border border-gray-100">
+                                        <Image src={product.variants[0]?.images?.[0] || '/placeholder.png'} alt={product.name} fill className="object-cover" />
+                                    </div>
+                                    <div className="flex-1 min-w-0">
+                                        <h3 className="text-xs font-bold text-gray-900 uppercase truncate">{product.name}</h3>
+                                        <p className="text-[9px] font-semibold text-orange-600 uppercase">{product.type}</p>
+                                    </div>
+                                    <div className="text-right">
+                                        <div className="text-sm font-bold text-gray-900">₹{(product.variants[0]?.discountPrice || product.variants[0]?.price)?.toLocaleString()}</div>
+                                        <div className="text-[8px] text-gray-400 uppercase">{product.variants[0]?.weight}</div>
+                                    </div>
+                                </div>
+                                <div className="flex items-center justify-between pt-3 border-t border-gray-50">
+                                    <div className="flex items-center gap-2">
+                                        <div className={`h-1.5 w-1.5 rounded-full ${product.isVeg ? "bg-green-500" : "bg-red-500"}`} />
+                                        <span className="text-[9px] font-bold text-gray-500 uppercase">{product.shelfLife} FRESH</span>
+                                    </div>
+                                    <div className="flex items-center space-x-3">
+                                        <button onClick={() => handleEdit(product)} className="text-[10px] font-bold text-black uppercase border-b border-black">Edit</button>
+                                        <button onClick={() => handleDelete(product._id)} className="text-[10px] font-bold text-red-600 uppercase">Remove</button>
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
                     </div>
 
-                    <div className="bg-white border border-black overflow-x-auto shadow-sm custom-scrollbar">
-                        <table className="w-full border-collapse min-w-[1000px]">
-                            <thead>
-                                <tr className="bg-gray-50 border-b border-black divide-x divide-black/5">
-                                    <th className="px-6 py-4 text-left text-[10px] font-black uppercase tracking-[0.3em] text-gray-400">Inventory Identity</th>
-                                    <th className="px-6 py-4 text-left text-[10px] font-black uppercase tracking-[0.3em] text-gray-400">Biological Specs</th>
-                                    <th className="px-6 py-4 text-left text-[10px] font-black uppercase tracking-[0.3em] text-gray-400">Commercials</th>
-                                    <th className="px-6 py-4 text-right text-[10px] font-black uppercase tracking-[0.3em] text-gray-400">Command</th>
-                                </tr>
-                            </thead>
-                            <tbody className="divide-y divide-gray-100">
-                                {filteredProducts.map((product) => (
-                                    <tr key={product._id} className="hover:bg-gray-50 transition-colors divide-x divide-gray-50">
-                                        <td className="px-6 py-4">
-                                            <div className="flex items-center space-x-4">
-                                                <div className="h-14 w-12 shrink-0 bg-white relative border border-gray-200 p-0.5 group">
-                                                    {product.variants[0]?.image && (
-                                                        <Image src={product.variants[0].image} alt={product.name} fill className="object-cover group-hover:scale-105 transition-transform" />
-                                                    )}
-                                                    {product.images?.length > 0 && (
-                                                        <div className="absolute -top-1.5 -right-1.5 h-4 w-4 bg-black text-white text-[7px] font-black flex items-center justify-center rounded-full border border-white shadow-sm">
-                                                            {product.images.length}
-                                                        </div>
-                                                    )}
-                                                </div>
-                                                <div>
-                                                    <div className="text-[11px] font-black text-gray-900 uppercase tracking-widest leading-none mb-1">{product.name}</div>
-                                                    <div className="flex items-center gap-1.5">
-                                                        <span className="text-[8px] text-orange-600 font-extrabold uppercase tracking-[0.2em]">{product.type}</span>
-                                                        <span className="h-0.5 w-0.5 rounded-full bg-gray-200" />
-                                                        <span className="text-[8px] text-gray-400 font-bold uppercase tracking-widest">{product.variants.length} PACK SIZES</span>
+                    {/* Desktop Table View */}
+                    <div className="hidden md:block bg-white border border-black overflow-hidden">
+                        <div className="overflow-x-auto">
+                            <table className="w-full border-collapse min-w-[1000px]">
+                                <thead>
+                                    <tr className="bg-gray-50 border-b border-black">
+                                        <th className="px-6 py-4 text-left text-[10px] font-bold uppercase tracking-widest text-gray-400">Snack Identity</th>
+                                        <th className="px-6 py-4 text-left text-[10px] font-bold uppercase tracking-widest text-gray-400">Specifications</th>
+                                        <th className="px-6 py-4 text-left text-[10px] font-bold uppercase tracking-widest text-gray-400">Pricing</th>
+                                        <th className="px-6 py-4 text-right text-[10px] font-bold uppercase tracking-widest text-gray-400">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody className="divide-y divide-gray-100">
+                                    {filteredProducts.map((product) => (
+                                        <tr key={product._id} className="hover:bg-gray-50 transition-colors">
+                                            <td className="px-6 py-4">
+                                                <div className="flex items-center space-x-4">
+                                                    <div className="h-14 w-12 shrink-0 relative border border-gray-200">
+                                                        <Image src={product.variants[0]?.images?.[0] || '/placeholder.png'} alt={product.name} fill className="object-cover" />
+                                                    </div>
+                                                    <div>
+                                                        <div className="text-[11px] font-bold text-gray-900 uppercase tracking-widest">{product.name}</div>
+                                                        <div className="text-[8px] text-orange-600 font-bold uppercase">{product.type}</div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        </td>
-                                        <td className="px-6 py-4">
-                                            <div className="flex flex-col gap-1.5">
+                                            </td>
+                                            <td className="px-6 py-4">
                                                 <div className="flex items-center gap-2">
-                                                    <div className={`h-2 w-2 rounded-full border border-white shadow-sm ${product.isVeg ? "bg-green-500" : "bg-red-500"}`} />
-                                                    <span className="text-[9px] font-black text-gray-900 uppercase tracking-widest">{product.isVeg ? 'PURE VEG' : 'CONTAINS EGG'}</span>
+                                                    <div className={`h-2 w-2 rounded-full ${product.isVeg ? "bg-green-500" : "bg-red-500"}`} />
+                                                    <span className="text-[9px] font-bold text-gray-900 uppercase">{product.isVeg ? 'VEG' : 'NON-VEG'}</span>
+                                                    <span className="text-[8px] text-gray-400">/ {product.shelfLife}</span>
                                                 </div>
-                                                <div className="text-[8px] font-bold text-gray-400 uppercase tracking-[0.1em]">{product.shelfLife} FRESHNESS</div>
-                                            </div>
-                                        </td>
-                                        <td className="px-6 py-4">
-                                            <div className="flex flex-col">
-                                                <div className="flex items-baseline gap-2">
-                                                    <div className="text-sm font-black text-gray-900 tracking-tighter">
-                                                        ₹{(product.variants[0]?.discountPrice || product.variants[0]?.price)?.toLocaleString()}
-                                                    </div>
-                                                    {product.variants[0]?.discountPrice && (
-                                                        <div className="bg-orange-50 text-orange-600 px-1.5 py-0.5 text-[7px] font-black uppercase tracking-tighter rounded border border-orange-100">ON OFFER</div>
-                                                    )}
+                                            </td>
+                                            <td className="px-6 py-4">
+                                                <div className="text-sm font-bold text-gray-900">₹{(product.variants[0]?.discountPrice || product.variants[0]?.price)?.toLocaleString()}</div>
+                                                <div className="text-[9px] text-gray-400 uppercase tracking-widest">Base Variant</div>
+                                            </td>
+                                            <td className="px-6 py-4 text-right">
+                                                <div className="flex items-center justify-end space-x-2">
+                                                    <button onClick={() => handleEdit(product)} className="p-2 border border-black hover:bg-black hover:text-white transition-all"><Edit2 size={10} /></button>
+                                                    <button onClick={() => handleDelete(product._id)} className="p-2 border border-gray-100 text-gray-300 hover:text-red-500 transition-all"><Trash2 size={10} /></button>
+                                                    <Link href={`/product/${product._id}`} target="_blank" className="p-2 bg-gray-50 text-black hover:bg-black hover:text-white transition-all"><ExternalLink size={10} /></Link>
                                                 </div>
-                                                <div className="text-[9px] text-gray-400 font-bold uppercase tracking-widest">Pricing Structure</div>
-                                            </div>
-                                        </td>
-                                        <td className="px-6 py-4 text-right">
-                                            <div className="flex items-center justify-end space-x-2">
-                                                <button onClick={() => handleEdit(product)} className="p-2 border border-black text-black hover:bg-black hover:text-white transition-all cursor-pointer"><Edit2 size={10} /></button>
-                                                <button onClick={() => handleDelete(product._id)} className="p-2 border border-gray-100 text-gray-300 hover:border-red-500 hover:text-red-500 transition-all cursor-pointer"><Trash2 size={10} /></button>
-                                                <Link href={`/product/${product._id}`} target="_blank" className="p-2 bg-gray-50 text-black hover:bg-black hover:text-white transition-all"><ExternalLink size={10} /></Link>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                ))}
-                                {filteredProducts.length === 0 && (
-                                    <tr>
-                                        <td colSpan="4" className="py-20 text-center text-[10px] font-black text-gray-300 uppercase tracking-widest">
-                                            No recipes found matching your query
-                                        </td>
-                                    </tr>
-                                )}
-                            </tbody>
-                        </table>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                    {filteredProducts.length === 0 && (
+                                        <tr>
+                                            <td colSpan="4" className="py-20 text-center text-[10px] font-bold text-gray-300 uppercase">No Snacks Registered</td>
+                                        </tr>
+                                    )}
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             )}
