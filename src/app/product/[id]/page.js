@@ -91,7 +91,7 @@ export default function ProductPage({ params }) {
             <main className="flex-grow pt-24 pb-20">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     {/* Breadcrumb / Category */}
-                    <div className="flex items-center space-x-2 text-[10px] font-black uppercase tracking-[0.3em] text-gray-400 mb-8 border-b border-gray-50 pb-4">
+                    <div className="flex items-center space-x-2 text-[10px] font-black uppercase tracking-[0.3em] text-gray-400 mb-4 border-b border-gray-50 pb-2">
                         <Link href="/" className="hover:text-black transition-colors">Home</Link>
                         <span>/</span>
                         <Link href="/products" className="hover:text-black transition-colors">Catalogue</Link>
@@ -102,7 +102,7 @@ export default function ProductPage({ params }) {
                     <div className="lg:grid lg:grid-cols-12 lg:gap-x-12 items-start">
                         
                         {/* LEFT: Cinematic Gallery */}
-                        <div className="lg:col-span-7 space-y-6">
+                        <div className="lg:col-span-6 space-y-4">
                             <div className="relative aspect-square bg-white border border-gray-100 rounded-[2rem] overflow-hidden group shadow-sm">
                                 <Image
                                     src={activeImage || (selectedVariant && selectedVariant.images && selectedVariant.images[0]) || '/placeholder.png'}
@@ -129,14 +129,14 @@ export default function ProductPage({ params }) {
                             </div>
 
                             {/* Thumbnail Grid */}
-                            <div className="flex space-x-3 overflow-x-auto pb-4 px-1 custom-scrollbar">
+                            <div className="flex space-x-2 overflow-x-auto pb-2 px-1 custom-scrollbar">
                                 {gallery.map((img, i) => (
                                     <button
                                         key={i}
                                         onClick={() => setActiveImage(img)}
                                         className={classNames(
-                                            "relative h-20 w-20 shrink-0 rounded-2xl overflow-hidden border-2 transition-all cursor-pointer",
-                                            activeImage === img ? "border-orange-600 shadow-lg scale-105" : "border-transparent opacity-60 hover:opacity-100"
+                                            "relative h-14 w-14 lg:h-16 lg:w-16 shrink-0 rounded-xl overflow-hidden border-2 transition-all cursor-pointer",
+                                            activeImage === img ? "border-orange-600 shadow-sm" : "border-transparent opacity-60 hover:opacity-100"
                                         )}
                                     >
                                         <Image src={img} alt={`Gallery ${i}`} fill className="object-cover" />
@@ -146,56 +146,56 @@ export default function ProductPage({ params }) {
                         </div>
 
                         {/* RIGHT: Transactional Info */}
-                        <div className="lg:col-span-5 mt-12 lg:mt-0 lg:sticky lg:top-32 space-y-10">
+                        <div className="lg:col-span-6 mt-4 lg:mt-0 lg:sticky lg:top-24 space-y-3">
                             
                             {/* Header & Pricing */}
-                            <div className="space-y-4">
-                                <span className="text-[11px] font-bold uppercase tracking-[0.4em] text-orange-600 bg-orange-50/50 px-4 py-1.5 rounded-full inline-block">
+                            <div className="space-y-1">
+                                <span className="text-[10px] font-bold uppercase tracking-widest text-orange-600 bg-orange-50/50 px-2 py-0.5 rounded-full inline-block">
                                     {product.type}
                                 </span>
-                                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tighter text-gray-900 leading-[0.9] uppercase underline decoration-orange-100 decoration-8 underline-offset-4">
+                                <h1 className="text-2xl lg:text-3xl font-bold tracking-tight text-gray-900 leading-none uppercase underline decoration-orange-100 decoration-2 underline-offset-2">
                                     {product.name}
                                 </h1>
-                                <div className="pt-4 flex items-baseline space-x-4">
+                                <div className="pt-1 flex items-baseline space-x-3">
                                     {selectedVariant?.discountPrice ? (
                                         <>
-                                            <span className="text-4xl font-black tracking-tighter text-orange-600">₹{selectedVariant.discountPrice}</span>
-                                            <span className="text-xl font-bold tracking-tighter text-gray-300 line-through">₹{selectedVariant.price}</span>
+                                            <span className="text-2xl font-bold tracking-tight text-orange-600">₹{selectedVariant.discountPrice}</span>
+                                            <span className="text-base font-medium tracking-tight text-gray-300 line-through">₹{selectedVariant.price}</span>
                                         </>
                                     ) : (
-                                        <span className="text-4xl font-black tracking-tighter text-gray-900">₹{selectedVariant?.price || product.variants[0].price}</span>
+                                        <span className="text-2xl font-bold tracking-tight text-gray-900">₹{selectedVariant?.price || product.variants[0].price}</span>
                                     )}
-                                    <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest bg-gray-50 px-2 py-0.5 rounded">Incl. of tax</span>
+                                    <span className="text-[9px] font-bold text-gray-400 uppercase tracking-widest bg-gray-50 px-2 py-0.5 rounded">Incl. of tax</span>
                                 </div>
                             </div>
 
                             {/* Quick Specs - Grid Style */}
-                            <div className="grid grid-cols-2 gap-4 border-y border-gray-50 py-8">
-                                <div className="flex items-center space-x-3 group">
-                                    <div className="h-10 w-10 rounded-2xl bg-gray-50 flex items-center justify-center text-gray-400 group-hover:bg-orange-50 group-hover:text-orange-600 transition-colors">
-                                        <Scale size={18} strokeWidth={2.5} />
+                            <div className="grid grid-cols-2 gap-4 border-y border-gray-50 py-2">
+                                <div className="flex items-center space-x-2.5 group">
+                                    <div className="h-7 w-7 rounded-lg bg-gray-50 flex items-center justify-center text-gray-400 group-hover:bg-orange-50 group-hover:text-orange-600 transition-colors">
+                                        <Scale size={14} strokeWidth={2.5} />
                                     </div>
                                     <div>
-                                        <p className="text-[8px] font-black text-gray-400 uppercase tracking-widest leading-none mb-1">Total Weight</p>
-                                        <p className="text-xs font-black text-gray-900 uppercase">{selectedVariant?.weight || product.variants[0].weight}</p>
+                                        <p className="text-[7px] font-bold text-gray-400 uppercase tracking-widest leading-none mb-0.5">Weight</p>
+                                        <p className="text-[10px] font-bold text-gray-900 uppercase">{selectedVariant?.weight || product.variants[0].weight}</p>
                                     </div>
                                 </div>
-                                <div className="flex items-center space-x-3 group">
-                                    <div className="h-10 w-10 rounded-2xl bg-gray-50 flex items-center justify-center text-gray-400 group-hover:bg-orange-50 group-hover:text-orange-600 transition-colors">
-                                        <Calendar size={18} strokeWidth={2.5} />
+                                <div className="flex items-center space-x-2.5 group">
+                                    <div className="h-7 w-7 rounded-lg bg-gray-50 flex items-center justify-center text-gray-400 group-hover:bg-orange-50 group-hover:text-orange-600 transition-colors">
+                                        <Calendar size={14} strokeWidth={2.5} />
                                     </div>
                                     <div>
-                                        <p className="text-[8px] font-black text-gray-400 uppercase tracking-widest leading-none mb-1">Shelf Life</p>
-                                        <p className="text-xs font-black text-gray-900 uppercase">{product.shelfLife}</p>
+                                        <p className="text-[7px] font-bold text-gray-400 uppercase tracking-widest leading-none mb-0.5">Shelf Life</p>
+                                        <p className="text-[10px] font-bold text-gray-900 uppercase">{product.shelfLife}</p>
                                     </div>
                                 </div>
                             </div>
 
                             {/* Pack Size Selection */}
-                            <div className="space-y-5">
+                            <div className="space-y-3">
                                 <div className="flex justify-between items-center px-1">
-                                    <h3 className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Select Pack Size</h3>
-                                    <span className="text-[9px] font-bold text-gray-300 italic uppercase">Purely Handcrafted</span>
+                                    <h3 className="text-[9px] font-bold text-gray-400 uppercase tracking-widest">Select Pack Size</h3>
+                                    <span className="text-[8px] font-medium text-gray-300 italic uppercase">Purely Handcrafted</span>
                                 </div>
                                 <div className="grid grid-cols-2 gap-3">
                                     {product.variants.map((v) => (
@@ -213,10 +213,10 @@ export default function ProductPage({ params }) {
                                             )}
                                         >
                                             <p className={classNames(
-                                                "text-[10px] font-black uppercase tracking-widest leading-none mb-1",
+                                                "text-[10px] font-bold uppercase tracking-widest leading-none mb-1",
                                                 selectedVariant?.name === v.name ? "text-orange-600" : "text-gray-900"
                                             )}>{v.name}</p>
-                                            <p className="text-[9px] font-bold text-gray-400 uppercase">{v.weight}</p>
+                                            <p className="text-[9px] font-medium text-gray-400 uppercase">{v.weight}</p>
                                             {selectedVariant?.name === v.name && (
                                                 <div className="absolute top-2 right-2 h-1.5 w-1.5 rounded-full bg-orange-600" />
                                             )}
@@ -226,23 +226,23 @@ export default function ProductPage({ params }) {
                             </div>
 
                             {/* Description & Ingredients */}
-                            <div className="space-y-8">
-                                <div className="space-y-3">
-                                    <h3 className="text-[10px] font-black text-gray-400 uppercase tracking-widest">The Tradition</h3>
-                                    <p className="text-sm text-gray-600 leading-relaxed font-medium">
+                            <div className="space-y-4">
+                                <div className="space-y-1">
+                                    <h3 className="text-[9px] font-bold text-gray-400 uppercase tracking-widest">The Tradition</h3>
+                                    <p className="text-xs text-gray-600 leading-relaxed font-medium">
                                         {product.description}
                                     </p>
                                 </div>
 
                                 {product.ingredients && product.ingredients.length > 0 && (
-                                    <div className="p-6 bg-gray-50/50 border border-gray-100 rounded-3xl space-y-4">
+                                    <div className="p-4 bg-gray-50/50 border border-gray-100 rounded-2xl space-y-2">
                                         <div className="flex items-center space-x-2 text-gray-400">
-                                            <ListChecks size={14} />
-                                            <h3 className="text-[10px] font-black uppercase tracking-widest">Core Ingredients</h3>
+                                            <ListChecks size={12} />
+                                            <h3 className="text-[9px] font-bold uppercase tracking-widest">Core Ingredients</h3>
                                         </div>
-                                        <div className="flex flex-wrap gap-2">
+                                        <div className="flex flex-wrap gap-1.5">
                                             {product.ingredients.map((ing, i) => (
-                                                <span key={i} className="text-[10px] font-bold bg-white text-gray-700 px-3 py-1.5 rounded-full border border-gray-100 uppercase tracking-tighter">
+                                                <span key={i} className="text-[8px] font-bold bg-white text-gray-700 px-2 py-1 rounded-full border border-gray-100 uppercase tracking-tighter">
                                                     {ing}
                                                 </span>
                                             ))}
@@ -261,18 +261,18 @@ export default function ProductPage({ params }) {
                             </div>
 
                             {/* Add to Cart CTA */}
-                            <div className="pt-6">
+                            <div className="pt-0.5">
                                 <button
                                     type="button"
-                                    className="w-full bg-black text-white py-5 rounded-2xl text-[12px] font-black uppercase tracking-[0.4em] hover:bg-orange-600 transition-all shadow-2xl active:scale-[0.98] flex items-center justify-center cursor-pointer space-x-4"
+                                    className="w-full bg-black text-white py-3.5 rounded-lg text-[10px] font-bold uppercase tracking-widest hover:bg-orange-600 transition-all shadow-lg active:scale-[0.98] flex items-center justify-center cursor-pointer space-x-3"
                                     onClick={() => addToCart(product, selectedVariant || product.variants[0])}
                                 >
-                                    <ShoppingBag size={18} strokeWidth={2.5} />
+                                    <ShoppingBag size={14} strokeWidth={2.5} />
                                     <span>Add to bag</span>
                                 </button>
-                                <p className="text-center text-[9px] text-gray-400 font-black uppercase tracking-[0.2em] mt-6 flex items-center justify-center space-x-2">
-                                    <ShieldCheck size={12} className="text-orange-500" />
-                                    <span>Premium quality ensured • handmade with love</span>
+                                <p className="text-center text-[7px] text-gray-400 font-bold uppercase tracking-[0.2em] mt-3 flex items-center justify-center space-x-1">
+                                    <ShieldCheck size={9} className="text-orange-500" />
+                                    <span>Quality Handcrafted Product</span>
                                 </p>
                             </div>
                         </div>

@@ -52,12 +52,12 @@ export default function ProductCard({ product }) {
                 <div className="flex justify-between items-start">
                     <div className="flex-1">
                         <Link href={`/product/${product._id}`}>
-                            <h3 className="text-lg font-black text-gray-900 group-hover:text-orange-600 transition-colors line-clamp-1 uppercase tracking-tight">
+                            <h3 className="text-lg font-bold text-gray-900 group-hover:text-orange-600 transition-colors line-clamp-1 uppercase tracking-tight">
                                 {product.name}
                             </h3>
                         </Link>
                         <div className="flex items-center space-x-2 mt-1">
-                            <p className="text-[10px] font-bold text-orange-600 uppercase tracking-widest">{product.type}</p>
+                            <p className="text-[10px] font-semibold text-orange-600 uppercase tracking-widest">{product.type}</p>
                             <span className="h-1 w-1 rounded-full bg-gray-200" />
                             <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{selectedVariant.weight}</p>
                         </div>
