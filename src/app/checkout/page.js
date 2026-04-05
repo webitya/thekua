@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Script from 'next/script';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { useCart } from '@/context/CartContext';
@@ -186,6 +187,10 @@ export default function CheckoutPage() {
 
     return (
         <div className="bg-white dark:bg-black min-h-screen">
+            <Script 
+                src="https://checkout.razorpay.com/v1/checkout.js" 
+                strategy="lazyOnload" 
+            />
             <Navbar />
 
             <main className="max-w-7xl mx-auto py-8 sm:py-12 px-4 sm:px-6 lg:px-8">

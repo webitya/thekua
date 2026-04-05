@@ -3,175 +3,192 @@
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import Image from 'next/image';
+import { Leaf, Heart, Award, ArrowRight, Star, ShieldCheck, Target, Coffee, Utensils, History, MapPin, Users, Sparkles } from 'lucide-react';
 
 export default function About() {
   return (
-    <div className="bg-[#FFF8E7] dark:bg-[#0D0703] min-h-screen">
+    <div className="bg-white min-h-screen font-sans selection:bg-orange-100 selection:text-orange-900">
       <Navbar />
 
       <main>
-        {/* Hero Section */}
-        <section className="relative h-[80vh] min-h-[500px] flex items-center justify-center overflow-hidden bg-[#1A0E05]">
-          <div className="absolute inset-0 z-0">
-            <Image
-              src="/hero.webp"
-              alt="THEKUA – Traditional Indian Snacks"
-              fill
-              className="object-cover opacity-50"
-              priority
-            />
-            <div className="absolute inset-0 bg-gradient-to-b from-[#1A0E05]/60 via-[#1A0E05]/20 to-[#1A0E05]" />
-            <div className="absolute inset-0 bg-gradient-to-r from-[#E8730A]/10 via-transparent to-transparent" />
-          </div>
-
-          <div className="relative z-10 text-center px-4 max-w-5xl mx-auto">
-            <span className="text-[10px] sm:text-xs font-bold uppercase tracking-[0.5em] text-[#F2A52B]/60 mb-6 block">
-              ✦ Established 2024 ✦
-            </span>
-            <h1
-              className="text-5xl md:text-7xl lg:text-9xl font-black text-white uppercase leading-none mb-6"
-              style={{ fontFamily: 'var(--font-playfair), serif' }}
-            >
-              THEKUA <span className="text-[#E8730A]">Story</span>
+        {/* Simple Hero Section */}
+        <section className="relative pt-20 pb-12 px-4 border-b border-gray-50">
+          <div className="max-w-4xl mx-auto text-center space-y-4">
+            <h1 className="text-4xl md:text-6xl font-black text-gray-900 tracking-tight leading-none">
+              Traditional Snacks, <br />
+              <span className="text-orange-600 italic font-medium">Modern Standards.</span>
             </h1>
-            <p className="text-base md:text-xl text-orange-200/60 font-medium uppercase tracking-[0.25em] max-w-xl mx-auto">
-              Born from grandma's kitchen, delivered to your heart.
+            <p className="text-sm md:text-base text-gray-500 font-medium max-w-xl mx-auto leading-relaxed">
+              We are on a mission to preserve the authentic flavors of India's heritage, one handcrafted batch at a time.
             </p>
           </div>
         </section>
 
-        {/* Our Story Section */}
-        <section className="py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
-            <div className="space-y-10 order-2 lg:order-1">
-              <div className="space-y-4">
-                <span className="text-[10px] font-black uppercase tracking-[0.5em] text-[#E8730A]/60">Our Beginning</span>
-                <h2
-                  className="text-3xl md:text-5xl font-bold tracking-tight text-[#1A0E05] dark:text-orange-100 leading-tight"
-                  style={{ fontFamily: 'var(--font-playfair), serif' }}
-                >
-                  Made with Love, <br />Rooted in Tradition
-                </h2>
-                <div className="h-1 w-16 rounded-full bg-gradient-to-r from-[#E8730A] to-[#F2A52B]" />
+        {/* Dense Story Section */}
+        <section className="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+            <div className="space-y-6">
+              <div className="space-y-1">
+                <h2 className="text-2xl md:text-3xl font-black text-gray-900 tracking-tight uppercase">Our Heritage</h2>
+                <p className="text-xs text-orange-600 font-bold uppercase tracking-[0.2em]">The Legacy of Home</p>
               </div>
 
-              <div className="space-y-5 text-[#8B4513]/70 dark:text-orange-300/60 text-base font-normal leading-relaxed">
-                <p className="text-[#1A0E05] dark:text-orange-100 font-semibold text-lg">
-                  THEKUA was born from a simple longing — the taste of home that no restaurant or supermarket shelf could replicate.
-                </p>
-                <p>
-                  We started in a small kitchen in Bihar, recreating the recipes our grandmothers made during Chhath Puja, Diwali, and Holi. Thekua, Gujia, Nimkin, Mathri — each snack carries a story, a memory, and a celebration.
-                </p>
-                <p>
-                  Today, we handcraft every batch with the same devotion, using only the finest natural ingredients — pure ghee, wholesome wheat, fragrant cardamom, and golden jaggery — the same way it has always been done.
-                </p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 text-gray-600 text-xs md:text-sm font-medium leading-relaxed">
+                <div className="space-y-4">
+                  <p className="text-gray-900 font-bold">
+                    THEKUA was born from a simple longing — the taste of home that no supermarket shelf could replicate.
+                  </p>
+                  <p>
+                    Started in 2024, our journey began in a family kitchen where recipes were whispered from one generation to the next. We realized that the "soul" of Indian snacks was being lost in mass production.
+                  </p>
+                </div>
+                <div className="space-y-4">
+                  <p>
+                    We decided to pivot back to the basics: wood-fired aromas, stone-ground flour, and the patience of slow-cooking. Our founders personally source every kilo of jaggery and every liter of ghee.
+                  </p>
+                  <p>
+                    Every Thekua, Nimkin, and Gujia we ship is a testament to this uncompromising standard of purity and taste.
+                  </p>
+                </div>
               </div>
 
-              <div className="grid grid-cols-3 gap-6 pt-8 border-t border-orange-100 dark:border-orange-900/30">
+              <div className="flex flex-wrap gap-4 pt-6 border-t border-gray-50">
                 {[
-                  { icon: '🌾', title: 'Pure Ingredients', sub: 'No additives' },
-                  { icon: '🤲', title: 'Handcrafted', sub: 'Small batches' },
-                  { icon: '💛', title: 'With Love', sub: 'Every time' },
-                ].map(({ icon, title, sub }) => (
-                  <div key={title} className="space-y-2 group text-center sm:text-left">
-                    <div className="text-3xl group-hover:scale-110 transition-transform duration-300">{icon}</div>
-                    <h3 className="text-xs font-black uppercase tracking-widest text-[#1A0E05] dark:text-orange-100">{title}</h3>
-                    <p className="text-[10px] text-[#8B4513]/50 dark:text-orange-400/40 uppercase font-bold tracking-wider">{sub}</p>
+                  { icon: Target, title: 'Our Mission', sub: 'Purity over profit' },
+                  { icon: Utensils, title: 'The Process', sub: 'Traditional craft' },
+                  { icon: Coffee, title: 'The Secret', sub: 'Grandma\'s recipes' },
+                ].map(({ icon: Icon, title, sub }) => (
+                  <div key={title} className="flex items-center gap-3 bg-gray-50 p-3 rounded-xl flex-1 min-w-[150px]">
+                    <Icon size={18} className="text-orange-600 flex-shrink-0" />
+                    <div>
+                      <h3 className="text-[10px] font-bold uppercase text-gray-900 tracking-wider whitespace-nowrap">{title}</h3>
+                      <p className="text-[9px] text-gray-400 font-bold uppercase tracking-widest">{sub}</p>
+                    </div>
                   </div>
                 ))}
               </div>
             </div>
 
-            {/* Image Card */}
-            <div className="relative h-[500px] lg:h-[700px] w-full rounded-[3rem] overflow-hidden shadow-2xl shadow-orange-200/40 dark:shadow-orange-950/30 order-1 lg:order-2 border border-orange-100 dark:border-orange-900/30">
+            {/* Compact Image Card */}
+            <div className="relative h-[300px] lg:h-[450px] w-full rounded-2xl overflow-hidden shadow-xl shadow-gray-100 border border-gray-100">
               <Image
-                src="/hero.webp"
-                alt="THEKUA Artisan Snacks being made"
+                src="/snacks_hero.png"
+                alt="Our Tradition"
                 fill
-                className="object-cover"
+                className="object-cover transition-transform duration-1000 hover:scale-105"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#1A0E05]/80 via-transparent to-transparent" />
-              <div className="absolute bottom-8 left-8 right-8 p-6 rounded-2xl bg-[#1A0E05]/70 backdrop-blur-md border border-[#E8730A]/20">
-                <p className="text-white text-xs font-bold uppercase tracking-[0.2em] leading-relaxed">
-                  "Every piece of thekua we make is an act of love and memory."
-                </p>
-                <span className="text-[#F2A52B]/70 text-[9px] font-bold uppercase tracking-widest block mt-2">— THEKUA Philosophy</span>
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+              <div className="absolute bottom-4 left-6 right-6">
+                <h4 className="text-white text-xs font-bold italic mb-1">Guaranteed Authenticity</h4>
+                <p className="text-white/70 text-[10px] uppercase tracking-widest font-bold">From our heart to your home.</p>
               </div>
             </div>
           </div>
         </section>
 
-        {/* Our Values */}
-        <section className="bg-[#1A0E05] py-28 border-y border-orange-900/30">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-20">
-            <div className="space-y-5">
-              <span className="text-[10px] font-black uppercase tracking-[0.5em] text-[#E8730A]/60">Our Promise</span>
-              <h2
-                className="text-3xl md:text-6xl font-bold uppercase tracking-tight text-white"
-                style={{ fontFamily: 'var(--font-playfair), serif' }}
-              >
-                Crafted for <span className="text-[#E8730A]">Taste</span>
-              </h2>
-              <p className="text-sm text-orange-200/40 font-bold uppercase tracking-[0.4em]">The THEKUA Standard</p>
+        {/* The Journey Timeline - NEW SECTION */}
+        <section className="bg-gray-50/50 py-16 border-y border-gray-100">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex flex-col md:flex-row gap-12 items-center">
+              <div className="w-full md:w-1/3 space-y-4 text-center md:text-left">
+                <div className="w-12 h-12 bg-orange-600 text-white rounded-2xl flex items-center justify-center mx-auto md:mx-0">
+                  <History size={24} />
+                </div>
+                <h2 className="text-3xl font-black text-gray-900 uppercase">The Journey</h2>
+                <p className="text-xs text-gray-400 font-bold uppercase tracking-widest">Our Mile Stones</p>
+              </div>
+              <div className="w-full md:w-2/3 grid grid-cols-1 sm:grid-cols-2 gap-10">
+                {[
+                  { year: '2023', title: 'The Inspiration', desc: 'The first batch of Thekua was made in a humble home kitchen for friends and family.' },
+                  { year: '2024', title: 'The Launch', desc: 'THEKUA brand was officially born with a mission to bring authentic snacks to all of India.' },
+                  { year: 'Today', title: 'Growing Community', desc: 'Deliver nationwide, connecting thousands to their nostalgic taste of home.' },
+                ].map((item) => (
+                  <div key={item.year} className="relative pl-8 border-l border-orange-200 py-1">
+                    <div className="absolute -left-[5px] top-0 w-2.5 h-2.5 rounded-full bg-orange-600 shadow-lg shadow-orange-200" />
+                    <span className="text-xs font-black text-orange-600 mb-1 block tracking-widest">{item.year}</span>
+                    <h4 className="text-sm font-bold text-gray-900 mb-2 uppercase tracking-wide">{item.title}</h4>
+                    <p className="text-[11px] text-gray-500 font-medium leading-relaxed">{item.desc}</p>
+                  </div>
+                ))}
+              </div>
             </div>
+          </div>
+        </section>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        {/* Founders Vision - NEW SECTION */}
+        <section className="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+          <div className="bg-orange-600 rounded-[2.5rem] p-10 md:p-16 text-white relative overflow-hidden group">
+            <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-[100px] -mr-32 -mt-32 transition-transform duration-1000 group-hover:scale-150" />
+            <div className="relative z-10 flex flex-col md:flex-row items-center gap-12">
+              <div className="flex-1 space-y-6">
+                <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/20 rounded-lg text-[10px] font-black uppercase tracking-widest">
+                  <Star size={12} />
+                  <span>Founders Vision</span>
+                </div>
+                <h3 className="text-3xl md:text-5xl font-black tracking-tight leading-tight italic">
+                  "We don't just sell snacks, we sell a piece of our heritage."
+                </h3>
+                <p className="text-sm md:text-lg text-orange-100 font-medium leading-relaxed max-w-2xl opacity-90">
+                  Our goal is to build THEKUA into more than a brand. We want it to be a bridge between a fast-paced modern world and the warm, patient recipes of our ancestors. Purity is not a feature for us—it is our only path.
+                </p>
+                <div className="pt-4 flex flex-wrap gap-8 items-center border-t border-white/20">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
+                      <MapPin size={18} />
+                    </div>
+                    <span className="text-[10px] font-bold uppercase tracking-widest">Authentic Roots</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
+                      <Users size={18} />
+                    </div>
+                    <span className="text-[10px] font-bold uppercase tracking-widest">Village Artisans</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Impact Section - NEW SECTION */}
+        <section className="py-16 bg-white border-b border-gray-50">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-12">
+            <div className="space-y-2">
+              <h2 className="text-3xl font-black text-gray-900 tracking-tight uppercase">Empowering Artisans</h2>
+              <p className="text-xs text-gray-400 font-bold uppercase tracking-widest">Beyond the taste</p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
               {[
-                {
-                  num: '1',
-                  title: 'Authentic Recipes',
-                  desc: 'Every snack follows century-old recipes from the kitchens of Bihar and UP, unchanged and uncompromised.',
-                  featured: false,
-                },
-                {
-                  num: '2',
-                  title: 'Premium Ingredients',
-                  desc: 'We source only the finest — stone-ground wheat, farm-fresh ghee, pure jaggery, and handpicked spices. No shortcuts.',
-                  featured: true,
-                },
-                {
-                  num: '3',
-                  title: 'Freshness Guaranteed',
-                  desc: 'Each batch is made to order in small quantities, vacuum-sealed and delivered within days — never sitting on a shelf for weeks.',
-                  featured: false,
-                },
-              ].map(({ num, title, desc, featured }) => (
-                <div
-                  key={num}
-                  className={`p-10 rounded-3xl space-y-5 group hover:scale-[1.02] transition-all duration-300 ${
-                    featured
-                      ? 'bg-[#E8730A] text-white shadow-2xl shadow-orange-900/40 scale-[1.02]'
-                      : 'bg-[#2A1508]/60 border border-orange-900/30 hover:border-[#E8730A]/40'
-                  }`}
-                >
-                  <div className={`w-14 h-14 rounded-2xl flex items-center justify-center text-xl font-black mx-auto ${featured ? 'bg-white text-[#E8730A]' : 'bg-[#E8730A] text-white'}`}>{num}</div>
-                  <h3 className={`text-sm font-black uppercase tracking-widest ${featured ? 'text-white' : 'text-orange-100'}`}>{title}</h3>
-                  <p className={`text-xs leading-relaxed font-normal ${featured ? 'text-orange-100/80' : 'text-orange-300/50'}`}>{desc}</p>
+                { label: 'Artisans', value: '15+', icon: Utensils, desc: 'Skilled women from local villages' },
+                { label: 'Recipes', value: '40+', icon: History, desc: 'Historical family heritage' },
+                { label: 'Pure Ghee', value: '100%', icon: Sparkles, desc: 'Purest cow ghee used' },
+                { label: 'Community', value: '5K+', icon: Users, desc: 'Happy snack lovers daily' },
+              ].map((stat) => (
+                <div key={stat.label} className="p-6 rounded-2xl bg-gray-50 space-y-3 transition-all hover:bg-orange-50 hover:shadow-xl hover:shadow-orange-100/30 group">
+                  <div className="w-12 h-12 rounded-xl bg-white border border-gray-100 text-orange-600 flex items-center justify-center mx-auto group-hover:bg-orange-600 group-hover:text-white transition-all">
+                    <stat.icon size={20} />
+                  </div>
+                  <h4 className="text-2xl font-black text-gray-900">{stat.value}</h4>
+                  <p className="text-[10px] font-bold uppercase text-gray-400 tracking-widest">{stat.label}</p>
+                  <p className="text-[9px] text-gray-400 font-medium leading-relaxed">{stat.desc}</p>
                 </div>
               ))}
             </div>
           </div>
         </section>
 
-        {/* Final CTA */}
-        <section className="py-32 px-4 text-center relative overflow-hidden bg-[#FFF8E7] dark:bg-[#0D0703]">
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-[#E8730A]/10 blur-[120px] rounded-full pointer-events-none" />
-          <div className="relative">
-            <span className="text-5xl block mb-6">🍪</span>
-            <h2
-              className="text-4xl md:text-7xl font-bold uppercase tracking-tight text-[#1A0E05] dark:text-orange-100 mb-6 drop-shadow-sm"
-              style={{ fontFamily: 'var(--font-playfair), serif' }}
-            >
-              Taste the Tradition
+        {/* Simpler CTA */}
+        <section className="py-16 px-4 text-center">
+          <div className="max-w-2xl mx-auto space-y-6">
+            <h2 className="text-3xl md:text-4xl font-black text-gray-900 tracking-tight italic">
+              Taste the True India.
             </h2>
-            <p className="text-sm text-[#8B4513]/60 dark:text-orange-400/50 font-medium uppercase tracking-[0.3em] mb-12 max-w-md mx-auto">
-              Order your favourite Indian snacks — fresh, traditional, and delivered with love.
-            </p>
             <button
               onClick={() => window.location.href = '/products'}
-              className="bg-[#E8730A] hover:bg-[#F2A52B] text-white px-12 py-5 uppercase tracking-[0.4em] text-[11px] font-black rounded-full hover:scale-105 active:scale-95 transition-all shadow-2xl shadow-orange-200/60 dark:shadow-orange-900/30 cursor-pointer"
+              className="inline-flex items-center gap-2 bg-gray-900 hover:bg-orange-600 text-white px-8 py-3.5 uppercase tracking-widest text-[9px] font-bold rounded-xl transition-all shadow-lg shadow-gray-200"
             >
-              Shop Our Snacks
+              Start Shopping
+              <ArrowRight size={14} />
             </button>
           </div>
         </section>

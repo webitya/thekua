@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import ProductCard from '@/components/ProductCard';
+import { ShoppingBag, Loader2 } from 'lucide-react';
 
 export default function ProductsPage() {
     const [products, setProducts] = useState([]);
@@ -28,55 +29,49 @@ export default function ProductsPage() {
     }, []);
 
     return (
-        <div className="bg-white dark:bg-black min-h-screen">
+        <div className="bg-white min-h-screen font-sans selection:bg-orange-100 selection:text-orange-900">
             <Navbar />
 
-            <main className="max-w-7xl mx-auto pt-32 pb-16 px-4 sm:px-6 lg:px-8">
-                <div className="text-center mb-12 max-w-2xl mx-auto">
-                    <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-gray-900 dark:text-white uppercase mb-4">
-                        The Artisan <span className="italic font-light text-gray-400">Collection</span>
-                    </h1>
-                    <div className="w-8 h-1 bg-black dark:bg-white mx-auto mb-5 rounded-full opacity-10"></div>
-                    <p className="text-sm sm:text-base text-gray-500 dark:text-gray-400 font-normal leading-relaxed">
-                        Discover our curated collection of artisanal snacks—where traditional Indian recipes meet modern gourmet standards.
-                    </p>
+            <main className="max-w-7xl mx-auto pt-24 pb-16 px-4 sm:px-6 lg:px-8">
+                {/* Header */}
+                <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12 border-b border-gray-50 pb-10">
+                    <div className="max-w-xl">
+                        <h1 className="text-4xl sm:text-5xl font-black text-gray-900 tracking-tight">
+                            Shop <span className="text-orange-600 italic font-medium">Authentic.</span>
+                        </h1>
+                        <p className="mt-4 text-gray-500 font-medium leading-relaxed">
+                            Discover our curated collection of artisanal snacks—where traditional Indian recipes meet modern gourmet standards.
+                        </p>
+                    </div>
                 </div>
 
                 {loading ? (
-                    <div className="pt-12 grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-3 xl:gap-16">
-                        {[...Array(6)].map((_, i) => (
-                            <div key={i} className="flex flex-col animate-pulse border border-gray-200 dark:border-zinc-800 rounded-[2.5rem] p-4">
-                                <div className="w-full aspect-[3/4] bg-gray-100 dark:bg-zinc-900 rounded-[2rem] mb-6" />
-                                <div className="space-y-5 px-2">
-                                    <div className="flex justify-between items-start">
-                                        <div className="space-y-2 w-2/3">
-                                            <div className="h-2 w-16 bg-gray-100 dark:bg-zinc-900 rounded-full" />
-                                            <div className="h-5 w-full bg-gray-100 dark:bg-zinc-900 rounded-full" />
-                                        </div>
-                                        <div className="h-5 w-12 bg-gray-100 dark:bg-zinc-900 rounded-full" />
-                                    </div>
-                                    <div className="flex justify-between items-center pt-1">
-                                        <div className="flex gap-2.5">
-                                            <div className="w-5 h-5 rounded-full bg-gray-100 dark:bg-zinc-900" />
-                                            <div className="w-5 h-5 rounded-full bg-gray-100 dark:bg-zinc-900" />
-                                        </div>
-                                        <div className="h-10 w-28 bg-gray-100 dark:bg-zinc-900 rounded-full" />
-                                    </div>
+                    <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                        {[...Array(8)].map((_, i) => (
+                            <div key={i} className="flex flex-col animate-pulse rounded-2xl p-3 border border-gray-50">
+                                <div className="w-full aspect-square bg-gray-50 rounded-xl mb-4" />
+                                <div className="space-y-2 px-1">
+                                    <div className="h-3 w-16 bg-gray-50 rounded-full" />
+                                    <div className="h-4 w-full bg-gray-50 rounded-full" />
                                 </div>
                             </div>
                         ))}
                     </div>
                 ) : (
                     <>
-                        <div className="pt-12 grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-3 xl:gap-16">
+                        <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                             {products.map((product) => (
                                 <ProductCard key={product._id} product={product} />
                             ))}
                         </div>
 
                         {products.length === 0 && (
-                            <div className="py-24 text-center">
-                                <p className="text-xl font-medium text-gray-500">Our collection is currently being curated. Check back soon.</p>
+                            <div className="py-32 text-center bg-gray-50 rounded-3xl border border-dashed border-gray-200 mt-8">
+                                <ShoppingBag size={48} className="mx-auto mb-4 text-gray-300" />
+                                <h3 className="text-lg font-bold text-gray-900 mb-1">Coming Soon</h3>
+                                <p className="text-xs text-gray-500 font-medium max-w-xs mx-auto">
+                                    Our collection is currently being curated. Check back soon for fresh batches.
+                                </p>
                             </div>
                         )}
                     </>
