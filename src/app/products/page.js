@@ -1,13 +1,13 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import ProductCard from '@/components/ProductCard';
 import { ShoppingBag, Loader2, SearchX } from 'lucide-react';
 
-export default function ProductsPage() {
+function ProductsContent() {
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
     const searchParams = useSearchParams();
@@ -47,7 +47,7 @@ export default function ProductsPage() {
                 {/* Header */}
                 <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12 border-b border-gray-50 pb-10">
                     <div className="max-w-xl">
-                        <h1 className="text-4xl sm:text-5xl font-black text-gray-900 tracking-tight">
+                        <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 tracking-tight">
                             {query ? (
                                 <>Search <span className="text-orange-600 italic font-medium">Results.</span></>
                             ) : (
@@ -102,5 +102,17 @@ export default function ProductsPage() {
 
             <Footer />
         </div>
+    );
+}
+
+export default function ProductsPage() {
+    return (
+        <Suspense fallback={
+            <div className="flex items-center justify-center min-h-screen">
+                <Loader2 className="animate-spin text-orange-600" size={32} />
+            </div>
+        }>
+            <ProductsContent />
+        </Suspense>
     );
 }
