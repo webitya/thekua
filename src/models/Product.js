@@ -52,4 +52,10 @@ const ProductSchema = new mongoose.Schema({
     },
 });
 
-export default mongoose.models.Product || mongoose.model('Product', ProductSchema);
+// Prevent schema caching issues in Next.js by deleting the model before re-defining
+if (mongoose.models.Product) {
+    delete mongoose.models.Product;
+}
+
+const Product = mongoose.model('Product', ProductSchema);
+export default Product;

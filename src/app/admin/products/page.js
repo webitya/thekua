@@ -71,7 +71,6 @@ export default function AdminProducts() {
                 ...prev, 
                 images: [...(prev.images || []), ...urls] 
             }));
-            alert(`Gallery updated: ${urls.length} images synchronized.`);
         } catch (error) {
             alert('Gallery Sync Failure: ' + error.message);
         } finally {
@@ -127,7 +126,6 @@ export default function AdminProducts() {
                 return { ...prev, variants: updatedVariants };
             });
             
-            alert(`Variant Assets Attached: ${urls.length} images connected.`);
         } catch (error) {
             alert('Variant Asset Crash: ' + error.message);
         } finally {
@@ -161,7 +159,7 @@ export default function AdminProducts() {
             ...product,
             variants: product.variants.map(v => ({
                 ...v,
-                images: v.images || []
+                images: v.images || (v.image ? [v.image] : [])
             }))
         };
         
@@ -214,7 +212,6 @@ export default function AdminProducts() {
             const result = await res.json();
 
             if (res.ok) {
-                alert('REGISTRY UPDATED: Successfully committed to MongoDB.');
                 setNewProduct(initialProductState);
                 setIsFormOpen(false);
                 setEditingId(null);
