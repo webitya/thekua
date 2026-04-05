@@ -3,7 +3,20 @@
 import { useState, useEffect, use } from 'react';
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
+import { 
+    Leaf, 
+    Clock, 
+    ShieldCheck, 
+    Info, 
+    ChevronLeft, 
+    ChevronRight, 
+    ShoppingBag,
+    Scale,
+    Calendar,
+    ListChecks
+} from 'lucide-react';
 import Navbar from '@/components/Navbar';
+import Link from 'next/link';
 import Footer from '@/components/Footer';
 import { useCart } from '@/context/CartContext';
 
@@ -17,7 +30,9 @@ export default function ProductPage({ params }) {
     const { addToCart } = useCart();
     const [product, setProduct] = useState(null);
     const [loading, setLoading] = useState(true);
-    const [selectedColor, setSelectedColor] = useState(null);
+    const [selectedVariant, setSelectedVariant] = useState(null);
+    const [activeImage, setActiveImage] = useState('');
+    const [gallery, setGallery] = useState([]);
 
     useEffect(() => {
         const fetchProduct = async () => {
@@ -28,7 +43,14 @@ export default function ProductPage({ params }) {
                     const found = json.data.find(p => p._id === id);
                     if (found) {
                         setProduct(found);
-                        setSelectedColor(found.variants[0]);
+                        setSelectedVariant(found.variants[0]);
+                        setActiveImage(found.variants[0].images[0] || found.images[0] || '');
+                        // Combine variant images and gallery images
+                        const allImgs = [
+                            ...found.variants.flatMap(v => v.images || []),
+                            ...(found.images || [])
+                        ].filter((v, i, a) => v && a.indexOf(v) === i); // Unique & valid images
+                        setGallery(allImgs);
                     }
                 }
             } catch (error) {
@@ -43,187 +65,220 @@ export default function ProductPage({ params }) {
 
     if (loading) {
         return (
-            <div className="bg-white dark:bg-black min-h-screen flex flex-col">
+            <div className="bg-white min-h-screen flex flex-col pt-20">
                 <Navbar />
-                <main className="min-h-screen flex items-center max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full pt-32 pb-20">
-                    <div className="lg:grid lg:grid-cols-[45%_1fr] lg:gap-x-16 lg:items-start w-full animate-pulse">
-                        <div className="flex flex-col">
-                            <div className="w-full aspect-square bg-gray-100 dark:bg-zinc-900 rounded-[2.5rem]" />
-                            <div className="mt-6 grid grid-cols-5 gap-3 px-2">
-                                {[...Array(5)].map((_, i) => (
-                                    <div key={i} className="aspect-square rounded-2xl bg-gray-100 dark:bg-zinc-900" />
-                                ))}
-                            </div>
-                        </div>
-                        <div className="mt-12 lg:mt-0 flex flex-col bg-white dark:bg-zinc-950 border border-gray-200 dark:border-zinc-800 rounded-[2.5rem] p-6 sm:p-10">
-                            <div className="space-y-4 mb-8">
-                                <div className="h-2 w-24 bg-gray-100 dark:bg-zinc-900 rounded-full" />
-                                <div className="h-10 w-3/4 bg-gray-100 dark:bg-zinc-900 rounded-xl" />
-                            </div>
-                            <div className="flex items-center justify-between border-y border-gray-50 dark:border-zinc-900 py-6 mb-8">
-                                <div className="h-8 w-32 bg-gray-100 dark:bg-zinc-900 rounded-lg" />
-                                <div className="h-6 w-24 bg-gray-100 dark:bg-zinc-900 rounded-full" />
-                            </div>
-                            <div className="space-y-8">
-                                <div className="space-y-4">
-                                    <div className="h-2 w-20 bg-gray-100 dark:bg-zinc-900 rounded-full" />
-                                    <div className="flex gap-3">
-                                        {[...Array(4)].map((_, i) => (
-                                            <div key={i} className="h-8 w-8 rounded-full bg-gray-100 dark:bg-zinc-900" />
-                                        ))}
-                                    </div>
-                                </div>
-                                <div className="space-y-3">
-                                    <div className="h-2 w-20 bg-gray-100 dark:bg-zinc-900 rounded-full" />
-                                    <div className="h-20 w-full bg-gray-100 dark:bg-zinc-900 rounded-2xl" />
-                                </div>
-                                <div className="pt-6">
-                                    <div className="h-14 w-full bg-gray-100 dark:bg-zinc-900 rounded-[1.5rem]" />
-                                </div>
-                            </div>
+                <div className="max-w-7xl mx-auto px-4 py-20 w-full animate-pulse">
+                    <div className="lg:grid lg:grid-cols-2 lg:gap-16">
+                        <div className="aspect-square bg-gray-50 rounded-3xl" />
+                        <div className="space-y-6 mt-10 lg:mt-0">
+                            <div className="h-4 w-24 bg-gray-50 mb-4" />
+                            <div className="h-10 w-3/4 bg-gray-50 mb-6" />
+                            <div className="h-20 w-full bg-gray-50" />
                         </div>
                     </div>
-                </main>
+                </div>
                 <Footer />
             </div>
         );
     }
 
-
-
-    if (!product) {
-        return notFound();
-    }
+    if (!product) return notFound();
 
     return (
-        <div className="bg-white dark:bg-black min-h-screen flex flex-col">
+        <div className="bg-white min-h-screen flex flex-col selection:bg-orange-100 selection:text-orange-900">
             <Navbar />
 
-            <main className="min-h-screen flex items-center max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full pt-32 pb-20">
-                <div className="lg:grid lg:grid-cols-[45%_1fr] lg:gap-x-16 lg:items-start w-full">
-                    {/* Image gallery */}
-                    <div className="flex flex-col sticky top-32">
-                        <div className="w-full aspect-square bg-white dark:bg-zinc-900 rounded-[2.5rem] overflow-hidden relative shadow-2xl border border-gray-100 dark:border-zinc-800">
-                            <Image
-                                src={selectedColor?.image || product.variants[0].image}
-                                alt={product.name}
-                                fill
-                                className="w-full h-full object-center object-cover transition-all duration-700 ease-in-out"
-                                priority
-                            />
-                        </div>
-                        {/* Thumbnail/Variant Preview */}
-                        <div className="mt-6 grid grid-cols-5 gap-3 px-2">
-                            {product.variants.map((variant) => (
-                                <button
-                                    key={variant.name}
-                                    onClick={() => setSelectedColor(variant)}
-                                    className={classNames(
-                                        'relative aspect-square rounded-2xl overflow-hidden border-2 transition-all duration-300 cursor-pointer',
-                                        selectedColor?.name === variant.name
-                                            ? 'border-black dark:border-white ring-4 ring-black/5'
-                                            : 'border-transparent opacity-60 hover:opacity-100'
-                                    )}
-                                >
-                                    <Image src={variant.image} alt={variant.name} fill className="object-cover" />
-                                </button>
-                            ))}
-                        </div>
+            <main className="flex-grow pt-24 pb-20">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    {/* Breadcrumb / Category */}
+                    <div className="flex items-center space-x-2 text-[10px] font-black uppercase tracking-[0.3em] text-gray-400 mb-8 border-b border-gray-50 pb-4">
+                        <Link href="/" className="hover:text-black transition-colors">Home</Link>
+                        <span>/</span>
+                        <Link href="/products" className="hover:text-black transition-colors">Catalogue</Link>
+                        <span>/</span>
+                        <span className="text-orange-600">{product.type}</span>
                     </div>
 
-                    {/* Product info - Outlined Container */}
-                    <div className="mt-12 lg:mt-0 flex flex-col bg-white dark:bg-zinc-950 border border-gray-200 dark:border-zinc-800 rounded-[2.5rem] p-6 sm:p-10 shadow-sm transition-all duration-500">
-                        <div className="space-y-2 mb-8">
-                            <p className="text-[10px] sm:text-xs font-bold uppercase tracking-[0.3em] text-gray-400">{product.type}</p>
-                            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tighter text-gray-900 dark:text-white uppercase leading-none">{product.name}</h1>
-                        </div>
+                    <div className="lg:grid lg:grid-cols-12 lg:gap-x-12 items-start">
+                        
+                        {/* LEFT: Cinematic Gallery */}
+                        <div className="lg:col-span-7 space-y-6">
+                            <div className="relative aspect-square bg-white border border-gray-100 rounded-[2rem] overflow-hidden group shadow-sm">
+                                <Image
+                                    src={activeImage || (selectedVariant && selectedVariant.images && selectedVariant.images[0]) || '/placeholder.png'}
+                                    alt={product.name}
+                                    fill
+                                    className="object-cover transition-transform duration-700 hover:scale-105"
+                                    priority
+                                />
+                                {/* Veg Badge */}
+                                <div className="absolute top-6 left-6 flex items-center space-x-2 bg-white/90 backdrop-blur-md px-4 py-2 rounded-full border border-gray-100 shadow-xl">
+                                    <div className={classNames(
+                                        "h-3 w-3 rounded-full flex items-center justify-center p-0.5",
+                                        product.isVeg ? "border-2 border-green-600" : "border-2 border-red-600"
+                                    )}>
+                                        <div className={classNames(
+                                            "h-full w-full rounded-full",
+                                            product.isVeg ? "bg-green-600" : "bg-red-600"
+                                        )} />
+                                    </div>
+                                    <span className="text-[10px] font-black uppercase tracking-widest text-gray-900">
+                                        {product.isVeg ? '100% PURE VEG' : 'CONTAINS EGG'}
+                                    </span>
+                                </div>
+                            </div>
 
-                        <div className="flex items-center justify-between border-y border-gray-50 dark:border-zinc-900 py-6 mb-8">
-                            <p className="text-2xl sm:text-3xl font-black text-black dark:text-white tracking-tighter">₹{product.price.toLocaleString()}</p>
-                            <div className="flex items-center space-x-2 bg-gray-50 dark:bg-zinc-900 px-3 py-1.5 rounded-full">
-                                <span className={classNames(
-                                    'h-2 w-2 rounded-full animate-pulse',
-                                    product.stock > 0 ? 'bg-green-500' : 'bg-red-500'
-                                )}></span>
-                                <span className="text-[10px] font-bold text-gray-600 dark:text-gray-400 uppercase tracking-widest leading-none">
-                                    {product.stock > 0 ? 'In Stock' : 'Out of Stock'}
-                                </span>
+                            {/* Thumbnail Grid */}
+                            <div className="flex space-x-3 overflow-x-auto pb-4 px-1 custom-scrollbar">
+                                {gallery.map((img, i) => (
+                                    <button
+                                        key={i}
+                                        onClick={() => setActiveImage(img)}
+                                        className={classNames(
+                                            "relative h-20 w-20 shrink-0 rounded-2xl overflow-hidden border-2 transition-all cursor-pointer",
+                                            activeImage === img ? "border-orange-600 shadow-lg scale-105" : "border-transparent opacity-60 hover:opacity-100"
+                                        )}
+                                    >
+                                        <Image src={img} alt={`Gallery ${i}`} fill className="object-cover" />
+                                    </button>
+                                ))}
                             </div>
                         </div>
 
-                        <div className="space-y-8">
-                            {/* Shade Selection */}
+                        {/* RIGHT: Transactional Info */}
+                        <div className="lg:col-span-5 mt-12 lg:mt-0 lg:sticky lg:top-32 space-y-10">
+                            
+                            {/* Header & Pricing */}
                             <div className="space-y-4">
-                                <div className="flex justify-between items-center">
-                                    <h3 className="text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest">
-                                        Selected Shade: <span className="text-black dark:text-white font-black ml-2">{selectedColor?.name}</span>
-                                    </h3>
+                                <span className="text-[11px] font-bold uppercase tracking-[0.4em] text-orange-600 bg-orange-50/50 px-4 py-1.5 rounded-full inline-block">
+                                    {product.type}
+                                </span>
+                                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tighter text-gray-900 leading-[0.9] uppercase underline decoration-orange-100 decoration-8 underline-offset-4">
+                                    {product.name}
+                                </h1>
+                                <div className="pt-4 flex items-baseline space-x-4">
+                                    {selectedVariant?.discountPrice ? (
+                                        <>
+                                            <span className="text-4xl font-black tracking-tighter text-orange-600">₹{selectedVariant.discountPrice}</span>
+                                            <span className="text-xl font-bold tracking-tighter text-gray-300 line-through">₹{selectedVariant.price}</span>
+                                        </>
+                                    ) : (
+                                        <span className="text-4xl font-black tracking-tighter text-gray-900">₹{selectedVariant?.price || product.variants[0].price}</span>
+                                    )}
+                                    <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest bg-gray-50 px-2 py-0.5 rounded">Incl. of tax</span>
                                 </div>
-                                <div className="flex flex-wrap gap-3">
-                                    {product.variants.map((variant) => (
+                            </div>
+
+                            {/* Quick Specs - Grid Style */}
+                            <div className="grid grid-cols-2 gap-4 border-y border-gray-50 py-8">
+                                <div className="flex items-center space-x-3 group">
+                                    <div className="h-10 w-10 rounded-2xl bg-gray-50 flex items-center justify-center text-gray-400 group-hover:bg-orange-50 group-hover:text-orange-600 transition-colors">
+                                        <Scale size={18} strokeWidth={2.5} />
+                                    </div>
+                                    <div>
+                                        <p className="text-[8px] font-black text-gray-400 uppercase tracking-widest leading-none mb-1">Total Weight</p>
+                                        <p className="text-xs font-black text-gray-900 uppercase">{selectedVariant?.weight || product.variants[0].weight}</p>
+                                    </div>
+                                </div>
+                                <div className="flex items-center space-x-3 group">
+                                    <div className="h-10 w-10 rounded-2xl bg-gray-50 flex items-center justify-center text-gray-400 group-hover:bg-orange-50 group-hover:text-orange-600 transition-colors">
+                                        <Calendar size={18} strokeWidth={2.5} />
+                                    </div>
+                                    <div>
+                                        <p className="text-[8px] font-black text-gray-400 uppercase tracking-widest leading-none mb-1">Shelf Life</p>
+                                        <p className="text-xs font-black text-gray-900 uppercase">{product.shelfLife}</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Pack Size Selection */}
+                            <div className="space-y-5">
+                                <div className="flex justify-between items-center px-1">
+                                    <h3 className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Select Pack Size</h3>
+                                    <span className="text-[9px] font-bold text-gray-300 italic uppercase">Purely Handcrafted</span>
+                                </div>
+                                <div className="grid grid-cols-2 gap-3">
+                                    {product.variants.map((v) => (
                                         <button
-                                            key={variant.name}
-                                            onClick={() => setSelectedColor(variant)}
+                                            key={v.name}
+                                            onClick={() => {
+                                                setSelectedVariant(v);
+                                                setActiveImage(v.images?.[0] || '');
+                                            }}
                                             className={classNames(
-                                                selectedColor?.name === variant.name
-                                                    ? 'ring-2 ring-offset-2 ring-black dark:ring-white z-10'
-                                                    : 'opacity-70 hover:opacity-100',
-                                                'relative h-8 w-8 rounded-full flex items-center justify-center cursor-pointer transition-all duration-300'
+                                                "relative p-4 text-left border transition-all cursor-pointer",
+                                                selectedVariant?.name === v.name
+                                                    ? "border-orange-600 bg-orange-50/20 ring-4 ring-orange-50/50"
+                                                    : "border-gray-100 hover:border-gray-200"
                                             )}
-                                            title={variant.name}
                                         >
-                                            <span
-                                                aria-hidden="true"
-                                                className="h-full w-full rounded-full border border-black/5 shadow-inner"
-                                                style={{ backgroundColor: variant.hex }}
-                                            />
+                                            <p className={classNames(
+                                                "text-[10px] font-black uppercase tracking-widest leading-none mb-1",
+                                                selectedVariant?.name === v.name ? "text-orange-600" : "text-gray-900"
+                                            )}>{v.name}</p>
+                                            <p className="text-[9px] font-bold text-gray-400 uppercase">{v.weight}</p>
+                                            {selectedVariant?.name === v.name && (
+                                                <div className="absolute top-2 right-2 h-1.5 w-1.5 rounded-full bg-orange-600" />
+                                            )}
                                         </button>
                                     ))}
                                 </div>
                             </div>
 
-                            {/* Description */}
-                            <div className="space-y-3">
-                                <h3 className="text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest">Description</h3>
-                                <div className="text-sm sm:text-base text-gray-600 dark:text-gray-400 leading-relaxed font-normal">
-                                    <p>{product.description}</p>
+                            {/* Description & Ingredients */}
+                            <div className="space-y-8">
+                                <div className="space-y-3">
+                                    <h3 className="text-[10px] font-black text-gray-400 uppercase tracking-widest">The Tradition</h3>
+                                    <p className="text-sm text-gray-600 leading-relaxed font-medium">
+                                        {product.description}
+                                    </p>
+                                </div>
+
+                                {product.ingredients && product.ingredients.length > 0 && (
+                                    <div className="p-6 bg-gray-50/50 border border-gray-100 rounded-3xl space-y-4">
+                                        <div className="flex items-center space-x-2 text-gray-400">
+                                            <ListChecks size={14} />
+                                            <h3 className="text-[10px] font-black uppercase tracking-widest">Core Ingredients</h3>
+                                        </div>
+                                        <div className="flex flex-wrap gap-2">
+                                            {product.ingredients.map((ing, i) => (
+                                                <span key={i} className="text-[10px] font-bold bg-white text-gray-700 px-3 py-1.5 rounded-full border border-gray-100 uppercase tracking-tighter">
+                                                    {ing}
+                                                </span>
+                                            ))}
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+
+                            {/* Allergen Info */}
+                            <div className="flex items-start space-x-3 p-4 bg-orange-50/30 border border-orange-100/50 rounded-2xl">
+                                <Info size={16} className="text-orange-400 mt-0.5 shrink-0" />
+                                <div className="text-[10px] font-medium text-orange-900 leading-relaxed">
+                                    <span className="font-black uppercase tracking-widest text-[9px] block mb-1">Dietary Information</span>
+                                    {product.allergenInfo}
                                 </div>
                             </div>
 
-                            {/* Features */}
-                            {product.features && product.features.length > 0 && (
-                                <div className="space-y-4 pt-4 border-t border-gray-50 dark:border-zinc-900">
-                                    <h3 className="text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest">Infused With</h3>
-                                    <div className="grid grid-cols-2 gap-3">
-                                        {product.features.map((feature) => (
-                                            <div key={feature} className="flex items-center space-x-3 text-[10px] sm:text-xs text-gray-600 dark:text-gray-400 bg-gray-50/50 dark:bg-zinc-900/50 p-3 rounded-2xl border border-gray-100/50 dark:border-zinc-800/50 group hover:border-gray-200 dark:hover:border-zinc-700 transition-colors">
-                                                <span className="h-1.5 w-1.5 rounded-full bg-black/20 dark:bg-white/20 group-hover:bg-black dark:group-hover:bg-white transition-colors"></span>
-                                                <span className="font-medium">{feature}</span>
-                                            </div>
-                                        ))}
-                                    </div>
-                                </div>
-                            )}
-
-                            {/* Actions */}
+                            {/* Add to Cart CTA */}
                             <div className="pt-6">
                                 <button
                                     type="button"
-                                    disabled={product.stock === 0}
-                                    className="w-full bg-black dark:bg-white dark:text-black text-white py-4 sm:py-5 rounded-[1.5rem] text-xs font-black uppercase tracking-[0.2em] hover:bg-zinc-800 dark:hover:bg-zinc-200 disabled:bg-gray-100 dark:disabled:bg-zinc-900 disabled:text-gray-400 disabled:cursor-not-allowed transition-all shadow-xl shadow-black/5 active:scale-[0.98] flex items-center justify-center cursor-pointer"
-                                    onClick={() => {
-                                        addToCart(product, selectedColor || product.variants[0]);
-                                    }}
+                                    className="w-full bg-black text-white py-5 rounded-2xl text-[12px] font-black uppercase tracking-[0.4em] hover:bg-orange-600 transition-all shadow-2xl active:scale-[0.98] flex items-center justify-center cursor-pointer space-x-4"
+                                    onClick={() => addToCart(product, selectedVariant || product.variants[0])}
                                 >
-                                    {product.stock > 0 ? 'Add to bag' : 'Sold Out'}
+                                    <ShoppingBag size={18} strokeWidth={2.5} />
+                                    <span>Add to bag</span>
                                 </button>
-                                <p className="text-center text-[10px] text-gray-400 mt-4 font-bold uppercase tracking-widest">Complimentary shipping on orders over ₹1,000</p>
+                                <p className="text-center text-[9px] text-gray-400 font-black uppercase tracking-[0.2em] mt-6 flex items-center justify-center space-x-2">
+                                    <ShieldCheck size={12} className="text-orange-500" />
+                                    <span>Premium quality ensured • handmade with love</span>
+                                </p>
                             </div>
                         </div>
                     </div>
                 </div>
             </main>
-
 
             <Footer />
         </div>

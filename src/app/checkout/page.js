@@ -49,7 +49,10 @@ export default function CheckoutPage() {
         }));
     }, [user]);
 
-    const subtotal = cart.reduce((total, item) => total + item.price * item.quantity, 0);
+    const subtotal = cart.reduce((total, item) => {
+        const activePrice = item.variant.discountPrice || item.variant.price;
+        return total + activePrice * item.quantity;
+    }, 0);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -68,14 +71,17 @@ export default function CheckoutPage() {
 
         const orderData = {
             customerDetails: formData,
-            items: cart.map(item => ({
-                productId: item._id,
-                name: item.name,
-                quantity: item.quantity,
-                price: item.price,
-                variantName: item.variant.name,
-                image: item.variant.image
-            })),
+            items: cart.map(item => {
+                const activePrice = item.variant.discountPrice || item.variant.price;
+                return {
+                    productId: item._id,
+                    name: item.name,
+                    quantity: item.quantity,
+                    price: activePrice,
+                    variantName: item.variant.name,
+                    image: item.variant.image
+                };
+            }),
             totalAmount: subtotal,
             paymentMethod: formData.paymentMethod
         };
@@ -355,20 +361,23 @@ export default function CheckoutPage() {
                         <h2 className="text-xs font-bold text-gray-400 mb-4 uppercase tracking-wider">Summary</h2>
                         <div className="bg-gray-50 dark:bg-zinc-900 rounded-lg p-4 sm:p-5 border border-gray-100 dark:border-gray-800 space-y-4">
                             <ul className="space-y-4 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar">
-                                {cart.map((item, index) => (
-                                    <li key={index} className="flex justify-between items-center">
-                                        <div className="flex items-center space-x-3">
-                                            <div className="h-12 w-10 bg-white rounded-md overflow-hidden border border-gray-100 relative shrink-0">
-                                                <img src={item.variant.image} alt={item.name} className="object-cover w-full h-full" />
+                                {cart.map((item, index) => {
+                                    const activePrice = item.variant.discountPrice || item.variant.price;
+                                    return (
+                                        <li key={index} className="flex justify-between items-center">
+                                            <div className="flex items-center space-x-3">
+                                                <div className="h-12 w-10 bg-white rounded-md overflow-hidden border border-gray-100 relative shrink-0">
+                                                    <img src={item.variant.image} alt={item.name} className="object-cover w-full h-full" />
+                                                </div>
+                                                <div className="min-w-0">
+                                                    <p className="text-xs font-bold text-gray-900 dark:text-white truncate">{item.name}</p>
+                                                    <p className="text-[10px] text-gray-400">Variant: {item.variant.name} • Qty: {item.quantity}</p>
+                                                </div>
                                             </div>
-                                            <div className="min-w-0">
-                                                <p className="text-xs font-bold text-gray-900 dark:text-white truncate">{item.name}</p>
-                                                <p className="text-[10px] text-gray-400">Variant: {item.variant.name} • Qty: {item.quantity}</p>
-                                            </div>
-                                        </div>
-                                        <span className="text-xs font-bold text-gray-900 dark:text-white">₹{(item.price * item.quantity).toLocaleString()}</span>
-                                    </li>
-                                ))}
+                                            <span className="text-xs font-bold text-gray-900 dark:text-white">₹{(activePrice * item.quantity).toLocaleString()}</span>
+                                        </li>
+                                    );
+                                })}
                             </ul>
                             <div className="border-t border-gray-100 dark:border-gray-800 pt-4 flex justify-between items-center font-bold text-gray-900 dark:text-white text-base">
                                 <span className="uppercase text-xs tracking-wider text-gray-400">Total Amount</span>

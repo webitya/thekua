@@ -10,7 +10,10 @@ import { TrashIcon, MinusIcon, PlusIcon } from '@heroicons/react/24/outline';
 export default function CartPage() {
     const { cart, removeFromCart, updateQuantity, clearCart } = useCart();
 
-    const subtotal = cart.reduce((total, item) => total + item.price * item.quantity, 0);
+    const subtotal = cart.reduce((total, item) => {
+        const activePrice = item.variant.discountPrice || item.variant.price;
+        return total + (activePrice * item.quantity);
+    }, 0);
 
     return (
         <div className="bg-white dark:bg-black min-h-screen">
@@ -30,62 +33,70 @@ export default function CartPage() {
                     <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
                         <section className="lg:col-span-8">
                             <ul className="space-y-6">
-                                {cart.map((item, index) => (
-                                    <li key={`${item._id}-${item.variant.name}-${index}`} className="group flex py-4 border-b border-gray-100 dark:border-zinc-900 last:border-0">
-                                        <div className="flex-shrink-0">
-                                            <div className="w-20 h-28 sm:w-24 sm:h-32 rounded-lg bg-gray-50 dark:bg-zinc-900 relative overflow-hidden shadow-sm">
-                                                <Image
-                                                    src={item.variant.image}
-                                                    alt={item.name}
-                                                    fill
-                                                    className="object-cover"
-                                                />
-                                            </div>
-                                        </div>
-
-                                        <div className="ml-4 sm:ml-6 flex-1 flex flex-col">
-                                            <div className="flex justify-between items-start">
-                                                <div className="min-w-0 flex-1">
-                                                    <h3 className="text-sm sm:text-base font-bold text-gray-900 dark:text-white uppercase truncate">
-                                                        <Link href={`/product/${item._id}`} className="hover:text-gray-600 dark:hover:text-gray-400 transition-colors cursor-pointer">
-                                                            {item.name}
-                                                        </Link>
-                                                    </h3>
-                                                    <p className="mt-1 text-xs text-gray-500 uppercase tracking-wider">{item.variant.name}</p>
-                                                    <p className="mt-2 text-sm font-bold text-gray-900 dark:text-white">₹{item.price.toLocaleString()}</p>
+                                {cart.map((item, index) => {
+                                    const activePrice = item.variant.discountPrice || item.variant.price;
+                                    return (
+                                        <li key={`${item._id}-${item.variant.name}-${index}`} className="group flex py-4 border-b border-gray-100 dark:border-zinc-900 last:border-0">
+                                            <div className="flex-shrink-0">
+                                                <div className="w-20 h-28 sm:w-24 sm:h-32 rounded-lg bg-gray-50 dark:bg-zinc-900 relative overflow-hidden shadow-sm">
+                                                    <Image
+                                                        src={item.variant.image}
+                                                        alt={item.name}
+                                                        fill
+                                                        className="object-cover"
+                                                    />
                                                 </div>
-
-                                                <button
-                                                    type="button"
-                                                    className="p-1 text-gray-300 hover:text-red-500 transition-colors cursor-pointer"
-                                                    onClick={() => removeFromCart(item._id, item.variant.name)}
-                                                >
-                                                    <TrashIcon className="h-5 w-5" />
-                                                </button>
                                             </div>
 
-                                            <div className="mt-auto flex items-center justify-between">
-                                                <div className="flex items-center border border-gray-200 dark:border-zinc-800 rounded-md">
+                                            <div className="ml-4 sm:ml-6 flex-1 flex flex-col">
+                                                <div className="flex justify-between items-start">
+                                                    <div className="min-w-0 flex-1">
+                                                        <h3 className="text-sm sm:text-base font-bold text-gray-900 dark:text-white uppercase truncate">
+                                                            <Link href={`/product/${item._id}`} className="hover:text-gray-600 dark:hover:text-gray-400 transition-colors cursor-pointer">
+                                                                {item.name}
+                                                            </Link>
+                                                        </h3>
+                                                        <p className="mt-1 text-xs text-gray-500 uppercase tracking-wider">{item.variant.name}</p>
+                                                        <div className="mt-2 flex items-baseline gap-2">
+                                                            <span className="text-sm font-bold text-orange-600">₹{activePrice.toLocaleString()}</span>
+                                                            {item.variant.discountPrice && (
+                                                                <span className="text-[10px] text-gray-300 line-through">₹{item.variant.price.toLocaleString()}</span>
+                                                            )}
+                                                        </div>
+                                                    </div>
+
                                                     <button
-                                                        onClick={() => updateQuantity(item._id, item.variant.name, item.quantity - 1)}
-                                                        className="p-1.5 hover:bg-gray-50 dark:hover:bg-zinc-900 transition-colors disabled:opacity-30 cursor-pointer disabled:cursor-not-allowed"
-                                                        disabled={item.quantity <= 1}
+                                                        type="button"
+                                                        className="p-1 text-gray-300 hover:text-red-500 transition-colors cursor-pointer"
+                                                        onClick={() => removeFromCart(item._id, item.variant.name)}
                                                     >
-                                                        <MinusIcon className="h-3.5 w-3.5" />
-                                                    </button>
-                                                    <span className="w-8 text-center text-xs font-bold">{item.quantity}</span>
-                                                    <button
-                                                        onClick={() => updateQuantity(item._id, item.variant.name, item.quantity + 1)}
-                                                        className="p-1.5 hover:bg-gray-50 dark:hover:bg-zinc-900 transition-colors cursor-pointer"
-                                                    >
-                                                        <PlusIcon className="h-3.5 w-3.5" />
+                                                        <TrashIcon className="h-5 w-5" />
                                                     </button>
                                                 </div>
-                                                <p className="text-sm font-bold text-gray-900 dark:text-white">₹{(item.price * item.quantity).toLocaleString()}</p>
+
+                                                <div className="mt-auto flex items-center justify-between">
+                                                    <div className="flex items-center border border-gray-200 dark:border-zinc-800 rounded-md">
+                                                        <button
+                                                            onClick={() => updateQuantity(item._id, item.variant.name, item.quantity - 1)}
+                                                            className="p-1.5 hover:bg-gray-50 dark:hover:bg-zinc-900 transition-colors disabled:opacity-30 cursor-pointer disabled:cursor-not-allowed"
+                                                            disabled={item.quantity <= 1}
+                                                        >
+                                                            <MinusIcon className="h-3.5 w-3.5" />
+                                                        </button>
+                                                        <span className="w-8 text-center text-xs font-bold">{item.quantity}</span>
+                                                        <button
+                                                            onClick={() => updateQuantity(item._id, item.variant.name, item.quantity + 1)}
+                                                            className="p-1.5 hover:bg-gray-50 dark:hover:bg-zinc-900 transition-colors cursor-pointer"
+                                                        >
+                                                            <PlusIcon className="h-3.5 w-3.5" />
+                                                        </button>
+                                                    </div>
+                                                    <p className="text-sm font-bold text-gray-900 dark:text-white">₹{(activePrice * item.quantity).toLocaleString()}</p>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </li>
-                                ))}
+                                        </li>
+                                    );
+                                })}
                             </ul>
                         </section>
 
