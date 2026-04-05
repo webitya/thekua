@@ -51,9 +51,7 @@ export default function Navbar() {
                 <span className="text-2xl font-black tracking-[0.15em] uppercase text-[#E8730A] dark:text-[#F2A52B] font-display" style={{ fontFamily: 'var(--font-playfair), serif' }}>
                   THEKUA
                 </span>
-                <span className="text-[8px] font-bold tracking-[0.35em] uppercase text-[#8B4513]/60 dark:text-orange-300/50 -mt-0.5">
-                  Artisan Snacks
-                </span>
+                {/* Artisan Snacks removed */}
               </div>
             </Link>
           </div>
@@ -166,7 +164,7 @@ export default function Navbar() {
             <div className="flex items-center justify-between p-6 border-b border-orange-100 dark:border-orange-900/30 sticky top-0 z-10 bg-[#FFF8E7] dark:bg-[#120904]">
               <div>
                 <span className="text-xl font-black tracking-widest text-[#E8730A] dark:text-[#F2A52B] uppercase" style={{ fontFamily: 'var(--font-playfair), serif' }}>THEKUA</span>
-                <p className="text-[9px] font-bold tracking-[0.3em] uppercase text-[#8B4513]/50 dark:text-orange-400/50">Artisan Snacks</p>
+                {/* Artisan Snacks removed */}
               </div>
               <button
                 onClick={() => setMobileMenuOpen(false)}

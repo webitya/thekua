@@ -209,7 +209,7 @@ export default function AdminProducts() {
                         {isFormOpen ? (editingId ? 'Edit Item' : 'Item Creation') : 'Inventory Master'}
                     </h2>
                     <p className="text-[10px] text-gray-500 uppercase tracking-[0.2em] mt-1">
-                        Areum Catalog Management
+                        THEKUA Catalog Management
                     </p>
                 </div>
                 {isFormOpen && (
@@ -337,7 +337,7 @@ export default function AdminProducts() {
                                     onClick={handleAddVariant}
                                     className="text-[9px] bg-black text-white px-3 py-1.5 uppercase font-black tracking-widest hover:bg-gray-800 transition-all"
                                 >
-                                    Add Shade +
+                                    Add Variant +
                                 </button>
                             </div>
                             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">

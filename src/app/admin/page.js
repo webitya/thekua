@@ -40,7 +40,7 @@ export default function AdminLoginPage() {
         <div className="min-h-screen bg-neutral-900 flex items-center justify-center p-4">
             <div className="max-w-md w-full bg-white rounded-none shadow-2xl overflow-hidden">
                 <div className="bg-black py-10 px-8 text-center">
-                    <h1 className="text-white text-3xl font-black tracking-tighter uppercase mb-2">Areum</h1>
+                    <h1 className="text-white text-3xl font-black tracking-tighter uppercase mb-2">THEKUA</h1>
                     <p className="text-neutral-400 text-xs font-bold uppercase tracking-widest">Master Admin Access</p>
                 </div>
 
@@ -97,7 +97,7 @@ export default function AdminLoginPage() {
                 </div>
 
                 <div className="p-6 bg-neutral-50 border-t border-neutral-100 text-center">
-                    <p className="text-xs text-neutral-400 italic">Security protected by Areum Cloud</p>
+                    <p className="text-xs text-neutral-400 italic">Security protected by THEKUA Security</p>
                 </div>
             </div>
         </div>

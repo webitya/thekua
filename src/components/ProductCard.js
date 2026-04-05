@@ -37,18 +37,14 @@ export default function ProductCard({ product }) {
                 <div className="absolute inset-0 bg-white/0 group-hover:bg-white/5 dark:group-hover:bg-black/5 transition-all duration-500" />
 
                 {/* New/Best Seller Tag placeholder - can be dynamic if data exists */}
-                {product.isNew && (
-                    <div className="absolute top-4 left-4 z-10 px-3 py-1 bg-black text-white text-[8px] font-black uppercase tracking-widest rounded-full">
-                        New
-                    </div>
-                )}
+                {/* New badge removed */}
             </Link>
 
             {/* Content Section */}
             <div className="space-y-5 px-2 pb-2">
                 <div className="flex justify-between items-start gap-4">
                     <div className="flex-1 min-w-0">
-                        <p className="text-[9px] text-gray-400 font-black uppercase tracking-[0.3em] mb-2">{product.type}</p>
+                        {/* Product type removed */}
                         <Link href={`/product/${product._id}`}>
                             <h3 className="text-sm sm:text-lg font-black text-black dark:text-white uppercase tracking-tighter hover:text-gray-600 dark:hover:text-gray-300 transition-colors line-clamp-1 leading-none">
                                 {product.name}

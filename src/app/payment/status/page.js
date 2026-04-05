@@ -97,8 +97,8 @@ function PaymentStatusContent() {
                     </div>
                     <h1 className="text-4xl font-bold uppercase tracking-tight">Order Confirmed!</h1>
                     <p className="text-gray-500 font-light max-w-md mx-auto text-lg">
-                        Thank you for choosing <span className="font-bold text-black dark:text-white">AREUM</span>.
-                        Your aesthetic journey begins now. We'll notify you when your order is out for delivery.
+                        Thank you for choosing <span className="font-bold text-black dark:text-white">THEKUA</span>.
+                        Your snack journey begins now. We'll notify you when your order is out for delivery.
                     </p>
                     {orderData && (
                         <div className="bg-gray-50 dark:bg-zinc-900 rounded-2xl p-6 max-w-sm mx-auto border border-gray-100 dark:border-zinc-800 space-y-4 shadow-sm">

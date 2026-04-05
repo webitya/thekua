@@ -9,7 +9,7 @@ export default function PrivacyPage() {
                 <h1 className="text-3xl font-bold mb-8 luxury-text">Privacy Policy</h1>
                 <div className="prose dark:prose-invert">
                     <p>This is a placeholder for the Privacy Policy.</p>
-                    <p>At Areum, we value your privacy and are committed to protecting your personal data.</p>
+                    <p>At THEKUA, we value your privacy and are committed to protecting your personal data.</p>
                 </div>
             </main>
             <Footer />

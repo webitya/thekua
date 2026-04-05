@@ -214,7 +214,7 @@ export default function OrderDetailPage() {
                                     <div className="absolute right-0 mt-2 w-56 bg-white dark:bg-zinc-900 border border-gray-100 dark:border-zinc-800 rounded-xl shadow-xl z-20 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200">
                                         <div className="p-2 space-y-1">
                                             <a
-                                                href={`mailto:help@areum.in?subject=Help with Order #${orderId.toUpperCase()}`}
+                                                href={`mailto:holisticapproch1998@gmail.com?subject=Help with Order #${orderId.toUpperCase()}`}
                                                 className="flex items-center gap-3 px-3 py-2.5 text-[10px] font-bold uppercase tracking-widest text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-zinc-800 hover:text-black dark:hover:text-white rounded-lg transition-colors"
                                             >
                                                 <Mail size={14} />

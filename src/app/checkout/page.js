@@ -27,7 +27,7 @@ export default function CheckoutPage() {
 
     // 1. Load initial data (User Profile > LocalStorage > Default)
     useEffect(() => {
-        const savedData = localStorage.getItem('areum_checkout_details');
+        const savedData = localStorage.getItem('thekua_checkout_details');
         let initialData = {};
 
         if (savedData) {
@@ -58,7 +58,7 @@ export default function CheckoutPage() {
         // Save to browser cache for easy re-filling (excluding payment method/sensitive info)
         const cacheData = { ...updatedData };
         delete cacheData.paymentMethod;
-        localStorage.setItem('areum_checkout_details', JSON.stringify(cacheData));
+        localStorage.setItem('thekua_checkout_details', JSON.stringify(cacheData));
     };
 
     const handleSubmit = async (e) => {
@@ -96,7 +96,7 @@ export default function CheckoutPage() {
                         key: data.keyId,
                         amount: data.amount,
                         currency: data.currency,
-                        name: 'Areum',
+                        name: 'THEKUA',
                         description: 'Order Payment',
                         order_id: data.orderId,
                         handler: async function (response) {
@@ -358,7 +358,7 @@ export default function CheckoutPage() {
                                             </div>
                                             <div className="min-w-0">
                                                 <p className="text-xs font-bold text-gray-900 dark:text-white truncate">{item.name}</p>
-                                                <p className="text-[10px] text-gray-400">Shade: {item.variant.name} • Qty: {item.quantity}</p>
+                                                <p className="text-[10px] text-gray-400">Variant: {item.variant.name} • Qty: {item.quantity}</p>
                                             </div>
                                         </div>
                                         <span className="text-xs font-bold text-gray-900 dark:text-white">₹{(item.price * item.quantity).toLocaleString()}</span>

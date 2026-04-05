@@ -4,39 +4,39 @@ import Product from '../../../../models/Product';
 
 const initialProducts = [
     {
-        name: "Velvet Matte Stick",
-        price: 1599,
-        description: "Our signature matte lipstick delivers intense color payoff with a lightweight, velvet feel. Infused with vitamin E for all-day comfort.",
-        type: "Bullet Matte Lipstick",
+        name: "Classic Wheat Thekua",
+        price: 349,
+        description: "Our signature Thekua is handcrafted using premium whole wheat flour, pure desi ghee, and organic jaggery. Each piece is flavored with cardamom and dry fruits for an authentic homemade taste.",
+        type: "Thekua",
+        stock: 100,
+        features: ["Pure Desi Ghee", "Organic Jaggery", "High Fiber", "No Preservatives"],
+        variants: [
+            { name: "Original Jaggery", hex: "#8B4513", image: "/snacks.png" },
+            { name: "Coconut Special", hex: "#F5DEB3", image: "/snacks.png" },
+            { name: "Dry Fruit Rich", hex: "#D2691E", image: "/snacks.png" }
+        ]
+    },
+    {
+        name: "Royal Mawa Gujia",
+        price: 599,
+        description: "Exquisite handmade pastries filled with a rich mixture of roasted khoya, dry fruits, and aromatic cardamom. A sweet celebration of Indian heritage in every bite.",
+        type: "Gujia",
         stock: 50,
-        features: ["Long-lasting", "Vitamin E Infused", "Intense Pigment", "Cruelty Free"],
+        features: ["Fresh Khoya", "Pure Saffron", "Handmade Artistry", "Festive Grade"],
         variants: [
-            { name: "Ruby Rush", hex: "#E31B23", image: "https://images.unsplash.com/photo-1586775490184-8804a9cfb096?auto=format&fit=crop&q=80&w=800" },
-            { name: "Mauve Magic", hex: "#A36361", image: "https://images.unsplash.com/photo-1591360236480-9c6a4cb3a6de?auto=format&fit=crop&q=80&w=800" },
-            { name: "Berry Bold", hex: "#8A2B3E", image: "https://images.unsplash.com/photo-1617300324836-e8d1979b0ee4?auto=format&fit=crop&q=80&w=800" }
+            { name: "Saffron Classic", hex: "#FFD700", image: "/snacks.png" },
+            { name: "Chocolate Infused", hex: "#3C1E08", image: "/snacks.png" }
         ]
     },
     {
-        name: "Liquid Silk Matte",
-        price: 2199,
-        description: "A weightless liquid lipstick that dries down to a seamless matte finish. Waterproof and smudge-proof formula.",
-        type: "Liquid Matte Lipstick",
-        stock: 0,
-        features: ["Waterproof", "12H Wear", "Silk Feel", "Hyper-Pigmented"],
+        name: "Spicy Masala Nimkin",
+        price: 249,
+        description: "Crunchy, savory salt-crusted snacks tempered with black pepper and nigella seeds. The quintessental Indian savory for your perfect cup of tea.",
+        type: "Nimkin",
+        stock: 150,
+        features: ["Extra Crunchy", "Stone-ground Spices", "Zero Trans Fat", "Tea-time Essential"],
         variants: [
-            { name: "Dusk Rose", hex: "#D48B8E", image: "https://images.unsplash.com/photo-1571646034647-52e6ea84b28c?auto=format&fit=crop&q=80&w=800" },
-            { name: "Sienna Soul", hex: "#A0522D", image: "https://images.unsplash.com/photo-1596704017254-9b121068fb31?auto=format&fit=crop&q=80&w=800" }
-        ]
-    },
-    {
-        name: "Crystal Shine Gloss",
-        price: 999,
-        description: "Experience the ultimate glass-like shine with our Crystal Gloss. Non-sticky and deeply hydrating.",
-        type: "Lipgloss",
-        stock: 120,
-        features: ["High Shine", "Hyaluronic Acid", "Non-Sticky", "Vegan"],
-        variants: [
-            { name: "Clear Glass", hex: "#FFFFFF", image: "https://images.unsplash.com/photo-1625093742435-6fa192b6fb10?auto=format&fit=crop&q=80&w=800" }
+            { name: "Black Pepper", hex: "#333333", image: "/snacks.png" }
         ]
     }
 ];

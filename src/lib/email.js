@@ -16,15 +16,15 @@ const getStatusDetails = (status, order) => {
             return {
                 subject: 'High Five! Your order is confirmed 🥂',
                 title: 'Order Confirmed',
-                message: "Great news! Your payment was successful and your order is now officially confirmed. We're starting to prep your aesthetic essentials with care.",
+                message: "Great news! Your payment was successful and your order is now officially confirmed. We're starting to prep your delicious snacks with care.",
                 color: '#10b981',
                 icon: '✅'
             };
         case 'Processing':
             return {
-                subject: 'Developing your glow... Order in Process 🕒',
+                subject: 'Preparing your treats... Order in Process 🕒',
                 title: 'Processing Order',
-                message: "We're currently gathering your items and preparing them for shipment. Quality checks are in progress to ensure everything meets our luxury standards.",
+                message: "We're currently gathering your items and preparing them for shipment. Quality checks are in progress to ensure everything meets our authentic taste standards.",
                 color: '#8b5cf6',
                 icon: '✨'
             };
@@ -32,15 +32,15 @@ const getStatusDetails = (status, order) => {
             return {
                 subject: 'On its way! Your order has been shipped 🚚',
                 title: 'Order Shipped',
-                message: `Exciting news! Your order is out for delivery. You can track it using the details below. Stay ready for your glow up!`,
+                message: `Exciting news! Your order is out for delivery. You can track it using the details below. Stay ready for your delicious treats!`,
                 color: '#3b82f6',
                 icon: '🚚'
             };
         case 'Delivered':
             return {
-                subject: 'Delivered! Time to unlock your beauty ✨',
+                subject: 'Delivered! Time to enjoy your snacks ✨',
                 title: 'Order Delivered',
-                message: "Your Areum package has arrived! We hope you love your new products. Don't forget to share your glow with us on social media.",
+                message: "Your THEKUA package has arrived! We hope you love your delicious snacks. Don't forget to share your treat with us on social media.",
                 color: '#22c55e',
                 icon: '🎁'
             };
@@ -83,7 +83,7 @@ export const sendOrderStatusEmail = async (order, customStatus = null) => {
     const status = customStatus || order.status;
     const { customerDetails, items, totalAmount, _id } = order;
     const statusDetails = getStatusDetails(status, order);
-    const trackingLink = `${process.env.NEXT_PUBLIC_BASE_URL || 'https://www.areum.in'}/track-order?id=${_id}`;
+    const trackingLink = `${process.env.NEXT_PUBLIC_BASE_URL || 'https://thekua.in'}/track-order?id=${_id}`;
 
     const itemsHtml = items.map(item => `
         <tr>
@@ -95,7 +95,7 @@ export const sendOrderStatusEmail = async (order, customStatus = null) => {
                         </td>
                         <td style="padding-left: 16px; vertical-align: middle;">
                             <p style="margin: 0; font-weight: 700; color: #0f172a; font-size: 14px; line-height: 1.4;">${item.name}</p>
-                            <p style="margin: 4px 0 0 0; color: #64748b; font-size: 12px;">Shade: ${item.variantName} • Qty: ${item.quantity}</p>
+                            <p style="margin: 4px 0 0 0; color: #64748b; font-size: 12px;">Variant: ${item.variantName} • Qty: ${item.quantity}</p>
                         </td>
                     </tr>
                 </table>
@@ -107,7 +107,7 @@ export const sendOrderStatusEmail = async (order, customStatus = null) => {
     `).join('');
 
     const mailOptions = {
-        from: `"Areum Luxe" <${process.env.EMAIL_USER}>`,
+        from: `"THEKUA Artisan Snacks" <${process.env.EMAIL_USER}>`,
         to: customerDetails.email,
         subject: statusDetails.subject,
         html: `
@@ -131,7 +131,7 @@ export const sendOrderStatusEmail = async (order, customStatus = null) => {
                                 <!-- Header -->
                                 <tr>
                                     <td style="background-color: #000000; padding: 48px 20px; text-align: center;">
-                                        <p style="margin: 0; color: #ffffff; font-size: 24px; letter-spacing: 12px; font-weight: 900; text-transform: uppercase;">AREUM</p>
+                                        <p style="margin: 0; color: #ffffff; font-size: 24px; letter-spacing: 12px; font-weight: 900; text-transform: uppercase;">THEKUA</p>
                                     </td>
                                 </tr>
 
@@ -222,8 +222,8 @@ export const sendOrderStatusEmail = async (order, customStatus = null) => {
                                         <a href="${trackingLink}" style="background-color: #000000; color: #ffffff; padding: 22px 48px; border-radius: 20px; text-decoration: none; font-weight: 800; font-size: 14px; text-transform: uppercase; letter-spacing: 3px; display: inline-block; box-shadow: 0 15px 30px rgba(0,0,0,0.15);">
                                             Track My Order
                                         </a>
-                                        <p style="margin: 24px 0 0 0; color: #94a3b8; font-size: 12px; font-weight: 500;">
-                                            Need help? Reply to this email or visit <a href="https://www.areum.in/contact" style="color: #000; text-decoration: underline;">Support</a>
+                                        <p style="margin: 24px 0 0 0; color: #94a3b8; font-size: 12px;">
+                                            Need help? Reply to this email or call us at <span style="color: #000; font-weight: 700;">+91 72941 68071</span>
                                         </p>
                                     </td>
                                 </tr>
@@ -255,9 +255,9 @@ export const sendOrderStatusEmail = async (order, customStatus = null) => {
                                 <!-- Footer -->
                                 <tr>
                                     <td style="background-color: #fafafa; padding: 48px 40px; text-align: center;">
-                                        <p style="margin: 0 0 24px 0; color: #0f172a; font-size: 14px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;">AREUM LUXE</p>
+                                        <p style="margin: 0 0 24px 0; color: #0f172a; font-size: 14px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;">THEKUA</p>
                                         <p style="margin: 0 0 32px 0; color: #94a3b8; font-size: 12px; line-height: 1.8; max-width: 300px; margin-left: auto; margin-right: auto;">
-                                            Join the community of luxury beauty lovers and share your glow.
+                                            Join the community of authentic Indian snack lovers and share the love.
                                         </p>
                                         <div style="margin-bottom: 32px;">
                                             <span style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background-color: #e2e8f0; margin: 0 4px;"></span>
@@ -265,7 +265,7 @@ export const sendOrderStatusEmail = async (order, customStatus = null) => {
                                             <span style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background-color: #e2e8f0; margin: 0 4px;"></span>
                                         </div>
                                         <p style="margin: 0; color: #cbd5e1; font-size: 11px; font-weight: 500; letter-spacing: 0.5px;">
-                                            &copy; ${new Date().getFullYear()} AREUM LUXE BEAUTY PVT LTD.
+                                            &copy; ${new Date().getFullYear()} THEKUA ARTISAN SNACKS PVT LTD.
                                             <br>All rights reserved.
                                         </p>
                                     </td>

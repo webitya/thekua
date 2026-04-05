@@ -145,6 +145,15 @@ body {
     animation: float 3s ease-in-out infinite;
   }
 
+  @keyframes zoom-in {
+    from { transform: scale(1); }
+    to { transform: scale(1.15); }
+  }
+
+  .animate-ken-burns {
+    animation: zoom-in 20s ease-in-out infinite alternate;
+  }
+
   .animate-warm-glow {
     animation: warm-glow 3s ease-in-out infinite;
   }

@@ -18,7 +18,7 @@ export async function POST(req) {
         const uploadResponse = await new Promise((resolve, reject) => {
             const uploadStream = cloudinary.uploader.upload_stream(
                 {
-                    folder: 'areum-products',
+                    folder: 'thekua-products',
                     resource_type: 'auto',
                     // Automatic optimization
                     transformation: [

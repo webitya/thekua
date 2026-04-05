@@ -21,7 +21,7 @@ const ProductSchema = new mongoose.Schema({
     },
     type: {
         type: String,
-        required: [true, 'Please provide a product type'], // e.g., "Lipstick", "Lipgloss"
+        required: [true, 'Please provide a product type'], // e.g., "Thekua", "Gujia", "Nimkin"
     },
     variants: [VariantSchema],
     features: {

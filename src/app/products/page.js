@@ -34,11 +34,11 @@ export default function ProductsPage() {
             <main className="max-w-7xl mx-auto pt-32 pb-16 px-4 sm:px-6 lg:px-8">
                 <div className="text-center mb-12 max-w-2xl mx-auto">
                     <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-gray-900 dark:text-white uppercase mb-4">
-                        The Luxe <span className="italic font-light text-gray-400">Archive</span>
+                        The Artisan <span className="italic font-light text-gray-400">Collection</span>
                     </h1>
                     <div className="w-8 h-1 bg-black dark:bg-white mx-auto mb-5 rounded-full opacity-10"></div>
                     <p className="text-sm sm:text-base text-gray-500 dark:text-gray-400 font-normal leading-relaxed">
-                        Discover our curated collection of luxury essentials—where Korean-inspired beauty meets modern sophistication.
+                        Discover our curated collection of artisanal snacks—where traditional Indian recipes meet modern gourmet standards.
                     </p>
                 </div>
 

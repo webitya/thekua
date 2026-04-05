@@ -53,7 +53,7 @@ export default function AdminLayout({ children }) {
         ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'}
       `}>
                 <div className="h-20 flex items-center justify-center border-b border-gray-800">
-                    <h1 className="text-xl font-bold tracking-widest uppercase">Areum Admin</h1>
+                    <h1 className="text-xl font-bold tracking-widest uppercase">THEKUA Admin</h1>
                 </div>
 
                 <nav className="flex-1 px-4 py-6 space-y-2">
@@ -97,7 +97,7 @@ export default function AdminLayout({ children }) {
                     <div className="flex items-center space-x-4">
                         <div className="text-right hidden sm:block">
                             <p className="text-sm font-medium text-gray-900">Master Admin</p>
-                            <p className="text-xs text-gray-500">admin@areum.com</p>
+                            <p className="text-xs text-gray-500">holisticapproch1998@gmail.com</p>
                         </div>
                         <div className="h-10 w-10 bg-gray-200 rounded-none flex items-center justify-center font-bold text-gray-600">
                             A

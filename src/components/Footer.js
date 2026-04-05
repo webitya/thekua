@@ -39,9 +39,7 @@ export default function Footer() {
               >
                 THEKUA
               </h3>
-              <p className="text-[10px] font-bold tracking-[0.4em] uppercase text-orange-400/50 mt-1">
-                Artisan Indian Snacks
-              </p>
+              {/* Artisan snacks removed */}
             </div>
             <p className="text-orange-200/60 text-sm leading-relaxed max-w-sm">
               Bringing the warmth of traditional Indian kitchens to your doorstep. Every bite carries the love, heritage, and authentic flavors of our homeland.
@@ -101,20 +99,23 @@ export default function Footer() {
 
             <div className="mt-8 p-4 rounded-2xl bg-[#E8730A]/10 border border-[#E8730A]/20">
               <p className="text-[10px] font-black uppercase tracking-widest text-[#F2A52B] mb-1">Contact Us</p>
-              <p className="text-xs text-orange-200/60 font-medium">support@thekua.in</p>
-              <p className="text-xs text-orange-200/60 font-medium mt-1">+91 98765 43210</p>
+              <p className="text-xs text-orange-200/60 font-medium">holisticapproch1998@gmail.com</p>
+              <p className="text-xs text-orange-200/60 font-medium mt-1">+91 72941 68071</p>
             </div>
           </div>
         </div>
 
         {/* Bottom Bar */}
-        <div className="mt-14 pt-8 border-t border-orange-900/30 flex flex-col sm:flex-row justify-between items-center gap-4">
-          <p className="text-xs text-orange-200/30 font-medium">
-            © {new Date().getFullYear()} THEKUA Artisan Snacks. All rights reserved.
-          </p>
+        <div className="mt-14 pt-8 border-t border-orange-900/30 flex flex-col sm:flex-row justify-between items-center gap-6">
+          <div className="space-y-2 text-center sm:text-left">
+            <p className="text-xs text-orange-200/30 font-medium">
+              © {new Date().getFullYear()} THEKUA Artisan Snacks. All rights reserved.
+            </p>
+            {/* Credits removed */}
+          </div>
           <div className="flex items-center gap-2">
             <span className="text-[#E8730A] text-sm">✦</span>
-            <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-orange-200/30">Made with love in India</span>
+            {/* Made with love removed */}
             <span className="text-[#E8730A] text-sm">✦</span>
           </div>
         </div>

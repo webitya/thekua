@@ -242,7 +242,7 @@ export default function ReelsSection() {
     return (
         <section className="py-20 bg-[#FFF8E7] dark:bg-[#0D0703] overflow-hidden border-t border-orange-100/60 dark:border-orange-900/20">
             <div className="max-w-4xl mx-auto px-4 text-center mb-12">
-                <span className="text-[10px] font-black uppercase tracking-[0.5em] text-[#E8730A]/60 mb-3 block">Follow Us</span>
+            {/* Follow Us badge removed */}
                 <h2
                     className="text-3xl sm:text-4xl font-bold tracking-tight text-[#1A0E05] dark:text-orange-100 mb-4"
                     style={{ fontFamily: 'var(--font-playfair), serif' }}

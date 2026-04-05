@@ -38,9 +38,7 @@ export default function Home() {
       {/* Featured Products Section */}
       <main className="max-w-7xl mx-auto py-20 px-4 sm:py-28 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <span className="text-[10px] font-black uppercase tracking-[0.5em] text-[#E8730A]/60 block mb-4">
-            Fresh & Ready
-          </span>
+          {/* Label removed */}
           <h2
             className="text-3xl font-bold tracking-tight text-[#1A0E05] dark:text-orange-100 sm:text-5xl"
             style={{ fontFamily: 'var(--font-playfair), serif' }}
@@ -105,25 +103,7 @@ export default function Home() {
         )}
       </main>
 
-      {/* Why THEKUA Banner */}
-      <section className="bg-[#1A0E05] py-20 border-y border-orange-900/30">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-            {[
-              { icon: '🌿', title: 'Pure & Natural', desc: 'No preservatives or artificial colors' },
-              { icon: '🤲', title: 'Handcrafted', desc: 'Made using traditional methods' },
-              { icon: '📦', title: 'Safe Delivery', desc: 'Food-grade, airtight packaging' },
-              { icon: '🎁', title: 'Gift Ready', desc: 'Perfect for all occasions' },
-            ].map(({ icon, title, desc }) => (
-              <div key={title} className="group cursor-default">
-                <div className="text-4xl mb-4 group-hover:scale-110 transition-transform duration-300">{icon}</div>
-                <h3 className="text-sm font-bold uppercase tracking-widest text-[#F2A52B] mb-2">{title}</h3>
-                <p className="text-xs text-orange-200/40 font-normal leading-relaxed">{desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* Why THEKUA Banner removed */}
 
       <ReviewsSection />
       <FaqsSection />
